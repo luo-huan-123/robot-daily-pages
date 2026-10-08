@@ -1,0 +1,54 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>机器人论文日报｜2026-10-08</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>机器人论文日报｜2026-10-08</h1><p class="author-units">作者单位待核实</p><p class=meta>2026-10-08T09:50:16+08:00 · paper · 修订3</p></header><div class=lead><p>Workhorse把视觉规划器和全身跟踪器接成短时闭环。前者从相机画面与五点历史预测未来姿态，后者结合机器人本体状态把短时姿态变成关节设定值。训练设计让两层都见过部署时会出现的历史或命令偏差。</p>
+</div><aside>更正：交付前补充规划器的重力与高度输入，以及动力学网络和actor/critic的训练关系。</aside><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">机器人为何要自己规划接触丰富的全身动作</a></li><li><a href="#section-2">五点示范如何接入视觉规划器</a></li><li><a href="#section-3">跟踪器如何把漂移的短时目标变成动作</a></li><li><a href="#section-4">仿真成绩必须连同任务口径和房间适配阅读</a></li><li><a href="#section-5">整组规划器消融不能归因于单一历史漂移</a></li><li><a href="#section-6">真机展示与跨本体结果仍受评测范围限制</a></li><li><a href="#section-7">精读建议与复现信息边界</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>机器人为何要自己规划接触丰富的全身动作</h2><p>传统全身动作跟踪依赖预先指定完整参考轨迹。物体操作还要求机器人从第一视角画面与自身状态计划怎样接触目标并维持平衡。</p>
+<p>论文首页标注 2026 年 10 月 6 日并列出 University of California, Berkeley。署名行没有可无歧义逐一核验作者单位的标记，因此这里只报告页面列出的机构，作者单位归属保留待核实。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>五点示范如何接入视觉规划器</h2><p>一名示范者佩戴五个 HTC Vive 追踪器，胸前相机记录第一视角视频。五个追踪点落在躯干附近、双手和双脚，构成躯干、双腕、双足的共同接口。</p>
+<p>先把示范者从记录图像中移除，再按原相机位姿渲染机器人，减少图像与部署视角的差异。规划器读取图像历史和五点运动历史，预测未来的五点目标。</p>
+<p>历史包含四帧图像，间隔 0.24 秒，以及九个五点样本，间隔 0.12 秒。</p>
+<p>每个五点历史样本还包含躯干坐标系中的重力方向，以及世界坐标系中的躯干高度。五点位姿在躯干坐标系中表达，本身不能显示躯干有多倾斜、离地多高。这两个附加量补足了规划器需要的状态。</p>
+<p>规划器一次输出 58 个目标步，步间隔 0.02 秒，总跨度 1.16 秒。</p>
+<p>训练时对五点历史施加从当前时刻向过去累积的刚体随机漂移，并依据相机运动变换历史图像。亮度、对比度、光照梯度和历史遮蔽也作随机变化，规划器仍以未漂移的示范片段为训练目标。</p>
+</section><section id="section-3"><span class="section-number">03</span><h2>跟踪器如何把漂移的短时目标变成动作</h2><p>跟踪器把五点目标转成关节设定值。每步读取接下来 0.2 秒内的六个目标样本，并结合 IMU 角速度、关节位置和速度、上一步关节设定值。规划器每秒重规划五次，跟踪器每秒运行五十次。</p>
+<p>部署时，当前规划片段会按机器人躯干坐标系表达。等待下一次规划期间，状态估计、规划和跟踪误差会让命令逐渐偏离机器人实际状态，新片段到来后，命令随之跳回新目标。</p>
+<p>训练模拟这一漂移与复位，重规划间隔随机设为 0.2 至 1 秒，漂移最多达到水平 10 厘米和偏航 10 度。由于跟踪器无法区分命令漂移与预期运动，奖励直接按漂移后的命令计算。规划器在下一次重规划时修正由此产生的误差。</p>
+<p>跟踪策略的训练分为两步。</p>
+<ol>
+<li>先用 mjlab 产生的仿真状态转移拟合动力学网络，让它预测动作执行后的状态。</li>
+<li>再在该网络预测的轨迹上训练 actor 和 critic，分别学习动作策略和价值估计。每个机器人和任务分别训练跟踪器，未用真机数据。</li>
+</ol>
+</section><section id="section-4"><span class="section-number">04</span><h2>仿真成绩必须连同任务口径和房间适配阅读</h2><p>箱子整理成功要求在 120 秒内放好全部三个箱且机器人不倒。每种条件各有 100 次仿真评测。无推搡时成功率为 77%，推搡条件在骨盆随机方向施加 40 N、持续 1 秒的力，每隔 5 至 10 秒一次，成功率为 64%。推搡组有 15% 的试验以倒地结束。</p>
+<p>评测在演示房间的重建仿真中进行。为缩小图像外观差异，作者另在重建房间收集约占规划器训练数据 15% 的样本，并说明这部分只供仿真评测使用。除推搡外，每轮改变三只箱子的位置和机器人起始姿态，外观、光照、摩擦和质量保持固定。</p>
+</section><section id="section-5"><span class="section-number">05</span><h2>整组规划器消融不能归因于单一历史漂移</h2><p>去掉规划器增强的消融移除 §IV-B.3 中整组增强，成功率从完整系统的 77% 降至无推搡 20%，推搡时降至 0%，多数试验中机器人倒地。作者明确说明这项消融没有分离增强组内各部分的效果，因此不能把全部下降单独归因于历史漂移。</p>
+<p>去掉跟踪器命令增强时，无推搡成功率为 76%，接近完整系统的 77%，推搡时从 64% 降至 52%，倒地率从 15% 升至 23%。这组结果显示命令增强的收益主要出现在推搡条件。</p>
+</section><section id="section-6"><span class="section-number">06</span><h2>真机展示与跨本体结果仍受评测范围限制</h2><p>真实 Unitree G1 展示箱子整理、接住抛来的箱子，以及推倒并攀爬行李箱，箱子整理还展示被人推搡或箱子被拿走后的恢复。论文明确说明真机实验是能力展示，成功率只在仿真报告。</p>
+<p>Unitree H2 的两层策略在仿真中用同一批人类示范重新训练，没有新增录制。H2 在 100 次无推搡仿真中的成功率为 83%，G1 为 77%，论文给出的两比例差值 95% 区间约为 ±11 个百分点，不能据此宣称明确的本体优势。H2 未做真机测试。</p>
+<p>每项任务各有自己的规划器和跟踪器，全部数据由一名示范者在一个房间录制。结果体现的是共享五点接口下的任务级移动操作，不能当作一个通用策略直接控制所有本体的证据。</p>
+</section><section id="section-7"><span class="section-number">07</span><h2>精读建议与复现信息边界</h2><p>优先精读规划器历史增强、跟踪器命令增强及重建房间消融。它们分别说明两层如何处理部署误差，以及哪些证据来自整组增强而非单一组件。</p>
+<p>本轮阅读依据为冻结的论文全文文本与摘要，未独立复现实验。论文首页提供项目页面入口，但本轮未核验论文许可、代码仓库、权重或完整示范数据的可用状态。</p>
+<p><a rel="noopener noreferrer" href="https://arxiv.org/pdf/2610.09117">论文全文</a> · <a rel="noopener noreferrer" href="https://hybridrobotics.github.io/workhorse/">项目页面</a></p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/pdf/2610.09117">https://arxiv.org/pdf/2610.09117</a> · fulltext · 2026-10-06T21:06:56Z</p><aside>本轮仅采用冻结来源包中的 Workhorse v1 全文文本与摘要。来源包带 request_retry_or_failure 异常标记，但保留了全文文本；未独立复现。仿真成绩不能代替真机成功率，跨本体结果仅为仿真重训。论文许可、代码仓库、权重和完整数据是否公开均未核实。</aside></article></body></html>
