@@ -1,0 +1,113 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>人形机器人论文日报｜2026年10月10日</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>人形机器人论文日报｜2026年10月10日</h1><p class="author-units">已核实作者单位<br>Massachusetts Institute of Technology · Amazon</p><p class=meta>2026-10-10T10:05:10+08:00 · paper · 修订3</p></header><div class=lead><p>FAITH 研究人形机器人一边跟踪速度、一边避开保护区的问题。它把任务策略提出的动作交给学得的安全过滤器修正。仿真中，相同安全率下它比两种降阶过滤配置保留更多任务回报，但强推下仍会牺牲平衡，真机证据也仅为定性展示。</p>
+</div><aside>更正：交付前纠正G1实验配置归属、补清critic与filter的安全判断关系、加入任务和对照解释，并恢复首页机构证据。</aside><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">当前未碰到保护区不代表还有安全路线</a></li><li><a href="#section-2">安全学习、动作修正与 PPO 如何闭合</a></li><li><a href="#section-3">G1 如何感知保护区并生成关节目标</a></li><li><a href="#section-4">同安全率下保留更多行走回报，强推下仍有取舍</a></li><li><a href="#section-5">真实机器人结果仍是定性展示</a></li><li><a href="#section-6">复现前仍要核实许可与训练工件</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>当前未碰到保护区不代表还有安全路线</h2><p>机器人在人或设备附近移动时，要让每个身体连杆保持在保护区域之外，同时完成速度控制任务。论文以有符号函数 h 表示伤害，h(s)&gt;0 为违规，正值大小表示违规严重程度。</p>
+<p>当前没有侵入保护区，不代表动力学和执行器限制下仍存在长期安全路线。 作者把状态定义为安全可行，前提是存在某种策略能无限期避开违规状态集合。因此当前 h(s)≤0 并不代表之后仍然安全，动力学与执行器限制也决定安全路径是否存在。</p>
+<p>可行时任务策略在安全约束下最大化回报，不可行时目标转为最小化整条轨迹中的峰值伤害。 当没有任何动作满足已学习安全条件时，同一个 filter 仍优先降低预测峰值伤害，不需要先切换到另一套恢复控制器。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>安全学习、动作修正与 PPO 如何闭合</h2><p>训练不是三个模块按顺序训练完再永久冻结。safety critic、backup actor 和 safety filter 从回放数据离策略更新，task policy 则从经过过滤的在策略轨迹更新。</p>
+<ol>
+<li><p><strong>用回放转移估计未来伤害。</strong> safety critic 估计状态与候选动作之后的峰值伤害。 backup actor 在回放状态上寻找让 critic 预测伤害更低的后续动作，并把该动作交给 critic 构造下一状态的 Bellman 目标。 构造 critic 的训练目标时，先比较当前伤害与下一状态在 backup 动作下的目标 critic 估计，取两者较大值，再按安全折扣与当前伤害加权。critic 用平方误差拟合这个目标。取较大值对应沿轨迹关注最坏伤害，而不是把每步伤害相加。折扣和近似误差意味着学得估计不等于精确峰值，也不构成正式安全证明。</p>
+</li>
+<li><p><strong>把安全估计变成小幅动作修正。</strong> safety filter 接收状态和 task policy 给出的名义动作，通过前馈残差网络产生修正并裁剪到动作范围。 可接受动作的条件是 critic 的预测值加非负安全裕量不大于零。训练 filter 时，一项损失限制修正动作与名义动作的差异，另一项惩罚超出这个条件的部分，critic 的梯度指导动作修正。训练使用回放状态，并混合回放和随机采样的名义动作。 训练过程中逐步提高安全惩罚权重。当没有任何动作满足已学习安全条件时，同一个 filter 仍优先降低预测峰值伤害，不需要先切换到另一套恢复控制器。</p>
+</li>
+<li><p><strong>让任务策略适应过滤后的转移。</strong> PPO 用过滤后轨迹更新任务策略，并在一次策略更新期间固定 filter，安全通过改变状态转移发挥作用，不另加到任务奖励。 环境据此返回下一状态与原任务奖励，执行转移进入回放库。作者还会让 backup policy 执行部分轨迹，这些轨迹只供安全学习使用，不进入 PPO 更新。 部署时只运行 task policy 与 safety filter，safety critic 和 backup actor 不需要部署。</p>
+</li>
+</ol>
+</section><section id="section-3"><span class="section-number">03</span><h2>G1 如何感知保护区并生成关节目标</h2><p><strong>仿真对象与安全量。</strong> 作者在 Isaac Lab 中研究 29-DoF Unitree G1，控制器输出关节位置目标。 保护区设为代表人体等对象的无限高平面区域，将机器人 31 个连杆表示成网格膨胀点，并用所有点对保护区的最大有符号穿入定义伤害。 仿真观察为分析生成的 64 束、360 度平面 LiDAR。</p>
+<p><strong>两项任务。</strong> Walking-Avoid 要求机器人跟踪给定速度并避开保护区。Push-Avoid 在此基础上于每回合开始施加一次推扰。 两项任务的回报含速度跟踪、足底打滑等运动项，并额外惩罚机器人自身受到的接触力，头部与双手权重大于躯干，以鼓励强推下保护脆弱部位。 这项身体接触力惩罚不同于安全函数对保护区穿入的衡量。</p>
+<p><strong>传感与控制管线。</strong> 论文给出的管线先以 SLAM 去除原始 3D LiDAR 的地面点，再将 360 度划成 64 个方位格并保留每格最近点。 LiDAR 每秒更新 10 次，两次扫描之间保持上一帧。50 Hz 的 FAITH 控制器将扫描与当前机器人状态合并，生成关节位置目标，1000 Hz PD 控制器负责跟踪目标。 图注同时标明管线中有仿真组件，包括 G1 动力学和分析生成的 LiDAR 输入。</p>
+</section><section id="section-4"><span class="section-number">04</span><h2>同安全率下保留更多行走回报，强推下仍有取舍</h2><p><strong>评测口径。</strong> G1 实验报告 4096 条轨迹上的安全率、回报及共同失败组的峰值穿入。安全轨迹以全程未侵入保护区为口径。原文另一处的三种子、2000 次迭代及检查点筛选配置属于双积分器实验，不能作为这组 G1 结果的配置。G1 对应训练种子数与检查点筛选过程在本次读取中未明确。 表中 ± 表示回合级标准差。论文把安全定义用于保护人，明确说明跌倒本身不算安全违规。 因此安全率不是完整速度跟踪、保持站立和避障任务的成功率。</p>
+<p>No Filter 是不含安全项的 PPO 运动策略，训练目标是速度跟踪与受到推扰后的恢复。ROCBF 则把 No Filter 作为名义策略，并用降阶控制障碍函数过滤其平面速度命令。</p>
+<table>
+<thead>
+<tr>
+  <th>任务</th>
+  <th>方法</th>
+  <th>安全率</th>
+  <th>回报</th>
+  <th>共同失败组峰值穿入</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Walking-Avoid</td>
+  <td>No Filter</td>
+  <td>80.37%</td>
+  <td>2428 ± 288</td>
+  <td>未报告</td>
+</tr>
+<tr>
+  <td>Walking-Avoid</td>
+  <td>ROCBF(0)</td>
+  <td>99.95%</td>
+  <td>2094 ± 342</td>
+  <td>未报告</td>
+</tr>
+<tr>
+  <td>Walking-Avoid</td>
+  <td>ROCBF(0.1)</td>
+  <td>99.95%</td>
+  <td>2182 ± 330</td>
+  <td>未报告</td>
+</tr>
+<tr>
+  <td>Walking-Avoid</td>
+  <td>FAITH</td>
+  <td>99.95%</td>
+  <td>2365 ± 345</td>
+  <td>未报告</td>
+</tr>
+<tr>
+  <td>Push-Avoid</td>
+  <td>No Filter</td>
+  <td>21.53%</td>
+  <td>123.2 ± 96.0</td>
+  <td>0.253 ± 0.149</td>
+</tr>
+<tr>
+  <td>Push-Avoid</td>
+  <td>ROCBF(0)</td>
+  <td>84.52%</td>
+  <td>115.5 ± 64.3</td>
+  <td>0.172 ± 0.146</td>
+</tr>
+<tr>
+  <td>Push-Avoid</td>
+  <td>FAITH</td>
+  <td>85.45%</td>
+  <td>80.0 ± 104.9</td>
+  <td>0.153 ± 0.184</td>
+</tr>
+</tbody>
+</table>
+<p>Walking-Avoid 中 FAITH 安全率为 99.95%，No Filter 为 80.37%，回报分别是 2365 ± 345 与 2428 ± 288。 在同为 99.95% 安全率时，FAITH 回报高于 ROCBF(0) 的 2094 ± 342 和 ROCBF(0.1) 的 2182 ± 330，约保留 No Filter 回报的 97%。</p>
+<p>Push-Avoid 中 FAITH 安全率为 85.45%，略高于列出的最佳对照 ROCBF(0) 的 84.52%，但回报 80.0 ± 104.9 低于 No Filter 的 123.2 ± 96.0。 所有参评方法都发生违规的初始状态构成共同失败组，作者没有把这些状态称为已证明物理不可行。 在共同失败回合中，FAITH 的平均峰值穿入为 0.153 ± 0.184，低于 No Filter 的 0.253 ± 0.149。 作者据此指出强推下会牺牲平衡以远离保护区。</p>
+</section><section id="section-5"><span class="section-number">05</span><h2>真实机器人结果仍是定性展示</h2><p>作者在 29-DoF Unitree G1 上进行了定性硬件演示。 论文还展示了机器人在强推下倒向远离保护区的一侧。</p>
+<p>论文没有报告真机安全率或伤害统计，也没有量化 LiDAR 噪声、控制延迟和通信延迟的影响。 仿真只考察平面保护区，没有评估碰撞严重程度或人身伤害。 作者指出，折扣、有限惩罚权重和学习误差都使控制器没有正式安全或最优性保证。 因此仿真安全率不能写成真机安全结论。</p>
+</section><section id="section-6"><span class="section-number">06</span><h2>复现前仍要核实许可与训练工件</h2><p>backup actor 在回放状态上寻找让 critic 预测伤害更低的后续动作，并把该动作交给 critic 构造下一状态的 Bellman 目标。 建议先读这一训练目标，再读 filter 在安全条件可行与不可行时如何选择动作。</p>
+<p>本次冻结全文没有给出可确认的论文许可信息，许可状态保持未知。代码仓库、模型权重和训练数据是否公开也分别未在本轮来源中核实，不能把论文全文可读等同于训练工件可用。本轮未运行实验或复现。可从<a rel="noopener noreferrer" href="https://arxiv.org/pdf/2610.12432">论文全文</a>继续阅读。</p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/pdf/2610.12432">https://arxiv.org/pdf/2610.12432</a> · fulltext · 2026-10-08T17:57:06Z</p><aside>本轮采用一份 arXiv v1 全文，重点核对问题定义、FAITH 学习与过滤链、29-DoF G1 仿真、传感与控制接口及局限。未逐页核对全部相关工作与参考文献，未运行实验。论文许可、代码仓库、模型权重、训练数据的可用状态分别未知。作者与单位依据首页编号对应。</aside></article></body></html>
