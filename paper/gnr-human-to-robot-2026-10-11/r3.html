@@ -1,0 +1,82 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>GNR 将人类手部示范重定向成可执行的机器人轨迹｜2026 年 10 月 11 日</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>GNR 将人类手部示范重定向成可执行的机器人轨迹｜2026 年 10 月 11 日</h1><p class="author-units">已核实作者单位<br>Meta Reality Labs Research · UC Davis · UNC Chapel Hill · UC Berkeley · CMU · MIT</p><p class=meta>2026-10-11T09:36:06.000+08:00 · paper · 修订3</p></header><div class=lead><p>GNR要解决人手示范没有机器人动作标签的问题，目标是生成符合仿真动力学与接触条件的机器人轨迹。它从少量MPC优化结果学习控制残差，再用流匹配生成候选。候选先在仿真中执行并按物理标准筛选，论文报告的是轨迹重定向通过率。</p>
+</div><aside>更正：交付前补齐ShapeFilter对照的任务、训练与测试范围及通过口径，QQ内容保持不变。</aside><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">为什么人手动作不能直接控制机器人</a></li><li><a href="#section-2">从人类记录到可执行的控制候选</a></li><li><a href="#section-3">数据引擎怎样扩展可用的人类示范</a></li><li><a href="#section-4">未见示范测试显示采样更省，但成功口径仍是仿真</a></li><li><a href="#section-5">旋钮装配需要反馈，但其他长时任务不能一概而论</a></li><li><a href="#section-6">阅读与复现建议</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>为什么人手动作不能直接控制机器人</h2><p>人类示范没有机器人动作标签，人体运动也不能直接用于机器人。几何逆运动学速度快，但忽略动力学和接触，因此生成的动作常不可行。物理重定向使用强化学习或采样式MPC优化控制，代价是逐条求解和大量随机采样。</p>
+<p>GNR从少量MPC生成的种子轨迹中学习，在人类运动条件下生成动态可行的机器人轨迹。它试图把单独求出的可行运动知识复用到后续示范中。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>从人类记录到可执行的控制候选</h2><ol>
+<li><p><strong>先构造机器人参考。</strong> 数据引擎的输入是逐帧人手动作、物体位姿和物体表面网格。多技能录制按手与物体的估计接触关系切段。作者把捕获的人手动作转入仿真人手，再用关键点逆运动学生成机器人参考轨迹。对于起始时已经抓住物体的片段，仿真中先重建握持再释放物体。</p>
+</li>
+<li><p><strong>再用MPC生成种子。</strong> DIAL-MPC优化机器人控制以跟踪参考物体运动，并在仿真回放时记录接触力。这些带参考、控制和仿真结果的样本用于训练GNR。</p>
+</li>
+<li><p><strong>学习控制残差分布。</strong> GNR学习的是控制序列相对IK参考的残差。参考轨迹包含逐时刻的机器人与物体状态，模型还按任务接收物体几何或位姿。训练样本把优化器生成的残差与对应条件配对，使用条件流匹配学习向量场。推理时模型将噪声经向量场积分为残差，再加到IK参考控制上。</p>
+</li>
+</ol>
+<p><strong>控制怎样落到机器人上。</strong> HOT3D的目标是Tesollo DG-5F五指手，输出26维关节控制。残差加回IK参考后得到完整控制序列，再经PD控制器在仿真中回放。NIST和ShapeFilter使用安装DG-5F手的Franka FR3机械臂，不能把26维手部接口直接套到这两个平台设置上。</p>
+<p><strong>条件输入随任务变化。</strong> HOT3D使用时序U-Net，结合FiLM注入条件，并用Point Transformer v3编码1,024个物体几何点。NIST使用参考轨迹与旋钮位姿。ShapeFilter还输入机械臂关节状态，主实验采用物体位姿，几何编码是另外比较的条件设置。上述接口是有参考的轨迹生成，不是只看相机图像的通用动作策略。</p>
+<ol start="4">
+<li><strong>仿真筛选或交给MPC。</strong> 每条候选在仿真回放，S条候选中至少一条通过任务标准才计为成功。HOT3D同时检查物体跟踪、手指穿透、持续握持和接触力，其他任务采用各自判据。对本次NIST旋钮装配任务，作者还让GNR为MPC提供初始控制，由MPC利用反馈继续修正。</li>
+</ol>
+</section><section id="section-3"><span class="section-number">03</span><h2>数据引擎怎样扩展可用的人类示范</h2><p>以下四项联合筛选用于HOT3D数据引擎。数据引擎先做发现阶段。发现阶段对每段动作尝试原始条件和16个单轴扰动，改变物体位置、朝向、开始时间、尺度或表面摩擦。仅当轨迹同时通过跟踪、穿透、握持和接触力四项条件才会保留。一个片段至少有一条通过，才进入扩展阶段。</p>
+<p>扩展阶段重采样摩擦并改变质量和网格几何，再用同一标准筛选。物理变化包括依据网格体积改变质量。几何变化包括重新生成网格、各向异性变形、补全遮挡部分和拉伸。筛选通过的新增轨迹与发现阶段结果合并，构成机器人示范数据集。</p>
+<p>数据引擎最终报告223,000条机器人轨迹，覆盖3,300种几何并带有仿真接触力标注。这个规模描述的是生成的数据，不代表同等数量的真实机器人试验。</p>
+</section><section id="section-4"><span class="section-number">04</span><h2>未见示范测试显示采样更省，但成功口径仍是仿真</h2><p>HOT3D来源包含780段人类动作，覆盖33个物体，平均每段约2秒。DIAL-MPC在360,000条增强示范中重定向成功95,000条，成功率26.43%。GNR训练使用28,000条DIAL-MPC成功示范，覆盖33种物体中的23种。</p>
+<p>HOT3D测试集包含1,000条未见物体、抓握或几何变体的示范。这些测试示范中272条在种子预算下DIAL-MPC成功，728条失败。</p>
+<table>
+<thead>
+<tr>
+  <th>方法</th>
+  <th>每条示范的采样数</th>
+  <th>仿真通过率</th>
+  <th>平均CPU核秒每条</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>DIAL-MPC</td>
+  <td>3,000</td>
+  <td>27.2%</td>
+  <td>2,689.3</td>
+</tr>
+<tr>
+  <td>GNR</td>
+  <td>256</td>
+  <td>56.2%</td>
+  <td>354.1</td>
+</tr>
+</tbody>
+</table>
+<p>在这一测试条件下，GNR相对DIAL-MPC将单条示范的CPU成本降低7.6倍。对DIAL-MPC种子预算内未能解决的测试示范，GNR抽样256个候选时仍有42.58%通过。</p>
+<p>通过率是pass@S，即S条仿真候选至少有一条满足该任务标准。它不表示任意一个候选都稳定成功，也不是物理机器人的策略成功率。</p>
+<p><strong>56.2%是在什么标准下通过。</strong> HOT3D要求物体位置误差小于150毫米、朝向误差小于40度，平均手指胶囊体穿透不超过5毫米。解除物体固定后，握持挤压力中位数至少1牛顿，每指接触力的95分位不超过100牛顿。这些阈值同时满足才计为通过，不能把它理解成毫米级精密操作成功率。</p>
+</section><section id="section-5"><span class="section-number">05</span><h2>旋钮装配需要反馈，但其他长时任务不能一概而论</h2><p><strong>任务是什么。</strong> NIST要求机器人抓取、搬运、对齐并把旋钮旋上螺纹柱。成功需水平误差小于1毫米、旋入至少8毫米且轴线误差小于0.003弧度。高精度示范用15台OptiTrack相机和带传感器的可穿戴外骨骼采集，NIST使用294条训练示范和64条测试示范。</p>
+<p><strong>反馈带来什么收益。</strong> NIST中GNR开环采样256个候选的通过率只有4.7%。用GNR生成的控制初始化MPC后，2,296个样本达到92.2%，普通MPC达到同一通过率需要3,440个样本。这里的价值是为后续优化提供更好的起点，而不是单靠生成就解决了旋钮装配。</p>
+<p><strong>结论限于这个任务。</strong> 同属长时高精度操作的ShapeFilter，在256个候选时开环通过率为99.3%。ShapeFilter要求将十字形零件插入匹配孔，装配间隙为1.96毫米。主实验用2,448条训练示范、589条测试示范，99.3%是每条示范的256个候选中至少一条通过，即pass@256。成功按物体质心进入预设插入区域判定，1.96毫米是装配间隙，不能当作成功误差阈值。</p>
+<p>因此，不能从NIST的失败推出所有长时精细操作都必须依赖反馈。</p>
+<p><strong>真机还没有证明什么。</strong> 论文报告行为克隆策略可在仿真中成功，并把此类策略的sim-to-real迁移留作未来工作。本次来源没有给出由这些数据训练的策略在真机上的重复成功率。</p>
+</section><section id="section-6"><span class="section-number">06</span><h2>阅读与复现建议</h2><p>建议先读残差生成与pass@S筛选，再看数据引擎如何用相同的物理判据过滤动作变体。长时任务对照也值得读，因为开环采样表现显著受任务时长与精度要求影响。</p>
+<p>本轮采用的来源为2026年10月8日的arXiv v1全文文本，核读了摘要、方法、数据引擎、主要实验和相关附录，未独立复现实验。论文许可、代码、权重、完整数据包及其许可在本轮来源中未核实。可从<a rel="noopener noreferrer" href="https://arxiv.org/pdf/2610.12440">arXiv v1 正文</a>继续阅读。</p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/pdf/2610.12440">https://arxiv.org/pdf/2610.12440</a> · fulltext · 2026-10-08T17:57:58Z</p><aside>采用本轮提供的 arXiv v1 全文来源，核读摘要、方法、数据引擎、主要实验及相关附录。报告限于论文描述的仿真结果，未独立复现实验。</aside></article></body></html>
