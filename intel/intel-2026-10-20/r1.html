@@ -1,0 +1,58 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>机器人情报｜2026-10-20</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>机器人情报｜2026-10-20</h1><p class=meta>2026-10-20T20:40:47.965022+08:00 · intel · 修订1</p></header><div class=lead><p>本期看基础模型接入实际机器人时，谁来承担数据、训练与测试工作。Physical Intelligence 的 Pi API beta 将微调和推理基础设施托管起来，让开发者围绕自己的任务反复采集数据、训练和评估。</p>
+<p>公告页面标注发表于2026年10月13日。本文作为近7天补充，解释该页面报告的产品流程与案例，不推断各次演示发生的具体日期。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">Pi API beta 接管了哪些工作</a></li><li><a href="#section-2">从示范到下一轮改进</a></li><li><a href="#section-3">两类案例分别证明到哪一步</a></li><li><a href="#section-4">云端部署还要看哪些条件</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>Pi API beta 接管了哪些工作</h2><p>Physical Intelligence 在公告中指出，即使已有机器人基础模型，把它适配到新任务、环境或机器人，仍需要机器学习基础设施、算力和数据处理流程。Pi API beta 提供的产品路径，是让开发者上传数据，由 Pi 管理微调所需的算力与基础设施，并通过托管网关访问微调后的模型。</p>
+<p>这项设计的意义在于把反复搭建训练与推理服务的工作交给平台。任务选择、机器人硬件，以及采集什么示范、怎样测试和怎样补齐失败案例，仍属于公告所描述的应用开发过程。它降低的是接入与迭代的基础设施负担，不能仅凭 API 的存在推断任务已经解决。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>从示范到下一轮改进</h2><p>公告披露的是开发流程，没有公开模型内部的完整训练方法。按已披露内容，这个循环可拆成四步。</p>
+<ol>
+<li><p>收集并上传示范数据
+团队围绕自己的应用采集示范，将数据交给 API。公告列举的难点包括衣物翻到反面、食材留不在勺中、制造零件落到错误位置。它们说明需要补的数据取决于具体失败，而不是只增加任意示范。</p>
+</li>
+<li><p>在托管基础设施上微调
+上传的数据用于微调 π 模型，计算资源与训练基础设施由 Pi 管理。该页面没有给出微调的损失函数、哪些参数更新、哪些模块冻结，因而不能从这份产品公告还原算法训练链。</p>
+</li>
+<li><p>调用模型并在机器人上测试
+开发者经托管网关使用微调后的模型进行推理，并在自己的机器人上测试表现。页面未列出推理请求包含哪些图像、指令或附加状态，也未说明返回的是何种动作表示及其如何连接底层控制器。这些接口细节仍未知。</p>
+</li>
+<li><p>用失败指导下一轮采集
+团队根据机器人测试中的失败决定接下来采集什么数据，再进入训练与评估。这里明确披露的是开发者组织的迭代循环，不能把它理解成机器人无需人工参与便自动在线更新模型。</p>
+</li>
+</ol>
+</section><section id="section-3"><span class="section-number">03</span><h2>两类案例分别证明到哪一步</h2><ul>
+<li><p>Almond 的零件去毛刺
+公告展示双臂机器人 Axol 为自身装配所用的间隔件去毛刺，使用团队通过 Pi API 迭代四天后获得的模型。四天描述的是这次模型迭代过程，不能换算为单次训练时长或单件加工节拍。页面也没有给出去毛刺合格率、重复试验数量或连续运行时长。</p>
+</li>
+<li><p>Actor 的重型机械作业
+公告称，Actor 的自主轮式装载机在一次真实商业部署中铲取物料并装入自卸卡车，机器内没有操作员。这是来源方对该案例的描述。驾驶室内无人不能独自证明全程无需远程支持，页面也未提供接管频率或长期可靠性统计。</p>
+</li>
+</ul>
+<p>两个案例体现了不同应用方向，但没有统一的对照实验与统计口径，不能据此横向比较性能。Almond 的四天迭代也不能套用到 Actor 的商业部署。</p>
+</section><section id="section-4"><span class="section-number">04</span><h2>云端部署还要看哪些条件</h2><p>页面称，多数展示应用通过 API 使用云端托管推理，部分早期部署暴露了网络连接问题。因此，理解这些案例时必须保留云端连接这一条件，不能将它们直接当作离线运行能力的证明。</p>
+<p>本页未公布端到端延迟、断网处理方式、统一成功率、价格或服务可用性承诺。现有材料支持的是产品流程与案例展示。下一步值得跟踪的是具体硬件与接口要求、连续运行中的失败和接管记录，以及网络波动时的表现。</p>
+<p><a rel="noopener noreferrer" href="https://www.pi.website/blog/api-beta">阅读 Physical Intelligence 公告</a></p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://www.pi.website/blog/api-beta">https://www.pi.website/blog/api-beta</a> · page · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://www.pi.website/blog/api-beta">https://www.pi.website/blog/api-beta</a> · page · 2026-10-13</p><aside>本期仅采用 Physical Intelligence 的 Pi API beta 公告及同页发布日期元数据，按近7天补充收录。本轮有限材料中未选出日期与一手归属均可核实的最近48小时进展，部分来源读取失败，不能据此断言行业没有更新。案例表现均按来源方报告转述，未运行模型或独立复现实验。 部分来源读取失败，本期仅采用已核实资料。</aside></article></body></html>
