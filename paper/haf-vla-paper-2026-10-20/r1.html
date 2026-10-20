@@ -1,0 +1,154 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>HAF-VLA 让行走、腰部与双臂逐阶段协调｜2026-10-20</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>HAF-VLA 让行走、腰部与双臂逐阶段协调｜2026-10-20</h1><p class="author-units">已核实作者单位<br>State Key Laboratory of Multimedia Information Processing, School of Computer Science, Peking University · Beijing Innovation Center of Humanoid Robotics · Nankai University · Xi’an Jiaotong University · Tsinghua University</p><p class=meta>2026-10-20T20:43:26.178548+08:00 · paper · 修订1</p></header><div class=lead><p>搬箱时，如果脚下位置和腰部姿态没有安排好，双臂就得不断补偿。HAF-VLA 将整段动作分三阶段生成，让后阶段参考前阶段的动作计划，也允许它修正这些计划。学习价值在于生成过程如何组织全身协调，实验结论则要分清任务进度与完整成功。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">先安排身体位置，双臂才有合适的工作空间</a></li><li><a href="#section-2">三阶段是在生成计划，最终动作仍一起执行</a></li><li><a href="#section-3">示范训练教什么，哪些权重会更新</a></li><li><a href="#section-4">部署不仅看相机，还要读取平台状态并转换指令</a></li><li><a href="#section-5">真机任务进度提高，完整成功仍有不确定性</a></li><li><a href="#section-6">消融支持缓存与修正，但证据集中在一个搬箱任务</a></li><li><a href="#section-7">局部扰动有收益，开放环境与复现条件仍需核实</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>先安排身体位置，双臂才有合适的工作空间</h2><ul>
+<li><p><strong>具体困难</strong>
+取衣任务要求机器人从晾衣杆取下衣物，走到衣柜前放入，再后退关门。身体离目标过远会迫使手臂过度伸展，过近又可能让手臂或躯干碰撞。这是行走与操作必须协调的直接原因。</p>
+</li>
+<li><p><strong>本文改什么</strong>
+HAF-VLA 沿用 π0.5 的预训练视觉语言编码器与动作专家，在共享动作空间内加入阶段嵌入、动作维度掩码及跨阶段缓存。阶段嵌入告诉同一个动作网络当前处理哪些身体部分，目标是避免一次生成全身动作时把姿态和操作混在一起。</p>
+</li>
+</ul>
+</section><section id="section-2"><span class="section-number">02</span><h2>三阶段是在生成计划，最终动作仍一起执行</h2><ol>
+<li><p><strong>先给出移动与视线计划</strong>
+输入图像、语言和机器人状态后，视觉语言前缀只编码一次，供三个阶段共用。第一阶段只激活移动速度、技能模式及头部指令，形成粗略移动和视线安排。技能模式用于选择行走、站立或跪姿。</p>
+</li>
+<li><p><strong>让腰部服从已有计划，同时允许修正</strong>
+第一阶段去噪结束后，将得到的干净动作再送入共享动作专家，提取注意力的键和值缓存。第二阶段读取视觉语言缓存和这份动作缓存，加入腰部姿态与高度指令，调整身体姿态及上身可达空间。传递的是已完成的动作表示，不是中途带噪动作。</p>
+</li>
+<li><p><strong>加入双臂和手，联合细化全部动作</strong>
+第三阶段激活全部有效动作维度，读取前两个阶段的动作缓存。前面已生成的维度没有硬冻结，仍可随操作需求修正。最终只执行第三阶段的动作块，前两个阶段不各自驱动一段机器人动作。</p>
+</li>
+</ol>
+<p>每阶段从独立噪声开始，进行10步去噪。模型一次预测100步动作，执行前40步后再依据新观测推理。作者报告单张RTX 5090上的完整三阶段推理约0.12秒，这只是推理耗时，不是完整任务用时，也不是机器人控制频率。</p>
+<figure><img src="https://arxiv.org/html/2610.26584v1/02-hierarchical-action-flow.png" alt="作者原图：S3.F2" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.26584v1/02-hierarchical-action-flow.png" alt="作者原图：S3.F2" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>按图注先看视觉、状态与语言输入如何经过分阶段动作生成，再看最终动作块如何交给机器人专用底层接口。这张图用于理解生成与执行的分工，不提供独立性能证据。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.26584v1#S3.F2">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.26584v1/02-hierarchical-action-flow.png">原图来源</a></p></figcaption></figure></section><section id="section-3"><span class="section-number">03</span><h2>示范训练教什么，哪些权重会更新</h2><ol>
+<li><p><strong>采集全身协同示范</strong>
+每项任务采集120条遥操作示范。主端机械臂控制双臂和手，手柄控制行走及腰部，IMU控制头部。这些示范为高层动作模型提供目标动作，不能把遥操作时的主端设备误写成部署时的输入设备。</p>
+</li>
+<li><p><strong>按阶段学习从噪声到动作的变化方向</strong>
+在示范动作与高斯噪声之间采样混合输入，用当前阶段掩码将未激活维度置零。共享动作专家预测流速度，以示范动作减噪声得到的目标速度监督。损失覆盖全部维度，未激活及补零维度的目标速度均为零，而非完全不计入损失。</p>
+</li>
+<li><p><strong>训练缓存采用真实示范</strong>
+训练时将对应阶段掩码后的真实动作重新编码为缓存，传给后阶段前切断该缓存的梯度。部署时改用前阶段去噪后的预测动作构建缓存。因此，训练使用真实动作条件来稳定优化，部署必须面对模型自身预测误差。</p>
+</li>
+<li><p><strong>预训练模型并非全部冻结</strong>
+语言骨干原有权重冻结，通过LoRA适配。动作专家、阶段嵌入、动作输入输出投影与时间MLP继续训练，视觉编码器也未冻结。论文配置通常训练50k步、全局批量64。这里是示范上的流匹配训练，不是用任务奖励重新训练高层VLA。</p>
+</li>
+</ol>
+<ul>
+<li><strong>底层控制是另一条训练链</strong>
+行走和腰部行为采用AMP风格的强化学习框架，跪姿采用BeyondMimic风格的运动跟踪控制器。本文只交代这些控制器的框架及接口，未充分展开其训练数据、完整奖励和优化设置，不能据此补写一套可直接复现的底层训练方案。</li>
+</ul>
+</section><section id="section-4"><span class="section-number">04</span><h2>部署不仅看相机，还要读取平台状态并转换指令</h2><ul>
+<li><p><strong>视觉与语言</strong>
+策略读取第一视角RGB图像和任务级语言指令。机器人状态先按示范分位数归一化，再离散化并加入提示词token，因此状态不是被省略的辅助信息。</p>
+</li>
+<li><p><strong>天工2.0的状态</strong>
+输入为36维，包括左右臂关节位置、左右手状态、腰部姿态和腿部运动速度。</p>
+</li>
+<li><p><strong>天工3.0的状态</strong>
+输入为99维，包括左右臂关节位置、左右手状态、左右触觉传感器状态、头部和左右腿关节位置、站立状态表示及选定的身体IMU特征。触觉是真实接口的一部分，但本文没有单独证明性能提升来自触觉。</p>
+</li>
+<li><p><strong>动作表示与执行</strong>
+模型输出32维动作，其中26维有效，另6维补零。有效部分包括14维双臂关节目标、2维手部指令、3维平面移动速度、2维头部指令、4维腰部姿态／高度及1维模式指令。移动与腰部交给专用RL控制器，臂手和头部走位置控制接口，不直接输出力矩。</p>
+</li>
+<li><p><strong>统一接口仍依赖平台适配</strong>
+天工2.0的腰部命令表示由腿和腰协调实现的全身腰部位姿，天工3.0则对应三个腰关节目标和下蹲高度。天工2.0只执行头部俯仰，忽略统一接口中另一头部维度。模式预测经反归一化后转换为有效离散编号，走到站的切换还插入约两秒零速度等待。</p>
+</li>
+</ul>
+<p>论文展示了两种平台上的统一动作表示及专用封装，没有给出同一检查点未经适配直接换机器人的独立对照。本期因此将它理解为接口兼容方案，不把两平台展示等同于跨本体零样本能力。</p>
+</section><section id="section-5"><span class="section-number">05</span><h2>真机任务进度提高，完整成功仍有不确定性</h2><p>主基准包括洗衣装载、取衣入柜、桌面整理、浇花、投球和搬箱转运六项任务。每方法每任务通常评测10次，每项任务满分15分，以完成的里程碑分数除以满分。开始区域与示范采集分布一致，不同方法尽可能使用相同初始配置。</p>
+<p>例如搬箱转运依次对提起箱子、带箱到达目标桌、将箱子放在桌上各计5分。因此做成前两步也能得到部分分数。下表是六项任务的平均归一化进度得分，不能称作完整任务成功率。</p>
+<table>
+<thead>
+<tr>
+  <th>六任务平均进度得分</th>
+  <th>HAF-VLA</th>
+  <th>π0.5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>归一化任务得分</td>
+  <td>68.3%</td>
+  <td>53.3%</td>
+</tr>
+</tbody>
+</table>
+<p>HAF-VLA 比 π0.5 高15.0个百分点。这个比较支持在本组真机任务中推进更多任务步骤。</p>
+<p>基线与HAF-VLA使用相同遥操作训练数据、动作接口及执行封装，但并非仅改变分阶段结构的纯控制变量比较。HAF-VLA用LoRA适配语言骨干并训练动作专家等参数，π0.5基线则全模型微调。</p>
+<p><strong>附录另报完整成功</strong>
+以搬箱转运为例，HAF-VLA的完整任务成功率为80%，π0.5为30%，各来自10次真机试验。对应95% Wilson置信区间分别为49%—94%和11%—60%。完整成功要求做完整个任务，不能用主表该任务93.3%与60.0%的进度得分替代。</p>
+<p>作者明确提醒试验次数有限、置信区间较宽。这些区间是统计不确定性的估计，不能据此宣称已证明差异具有统计显著性。本期也未独立复现实验。</p>
+<figure><img src="https://arxiv.org/html/2610.26584v1/04-task-progress.png" alt="作者原图：S4.F4" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.26584v1/04-task-progress.png" alt="作者原图：S4.F4" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>图中是任务代表性执行序列。前六项用于主基准，Box Carry用于受控消融。动作片段能帮助理解任务步骤，不能替代重复试验或完整成功率统计。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.26584v1#S4.F4">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.26584v1/04-task-progress.png">原图来源</a></p></figcaption></figure></section><section id="section-6"><span class="section-number">06</span><h2>消融支持缓存与修正，但证据集中在一个搬箱任务</h2><p>消融使用额外的Box Carry任务，即从床上抱起箱子送到圆桌。所有变体使用相同120条示范，每个设置评测10次。完整任务要先提起箱子，再无碰撞到桌前停下，最后把箱子完整放进桌面边界内，每项里程碑各计5分。</p>
+<table>
+<thead>
+<tr>
+  <th>Box Carry的归一化任务得分</th>
+  <th>得分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>完整HAF-VLA</td>
+  <td>86.7%</td>
+</tr>
+<tr>
+  <td>训练和部署都移除跨阶段缓存</td>
+  <td>50.0%</td>
+</tr>
+<tr>
+  <td>后阶段硬冻结前阶段动作</td>
+  <td>66.7%</td>
+</tr>
+<tr>
+  <td>只拼接各阶段首次生成的动作部分</td>
+  <td>46.7%</td>
+</tr>
+</tbody>
+</table>
+<p>这些结果支持前阶段信息传递和后阶段联合修正的作用。只在部署时移除或清零缓存的变体出现不安全动作，评测被终止，不能把它们当作零分成功率，也不能将单任务消融结论直接推广到全部六项任务。</p>
+<p>增加去噪步数并不自动带来收益。Box Carry上单阶段π0.5用30步去噪得30.0%，三阶段HAF-VLA总计30步得86.7%。两者只匹配去噪更新次数，缓存构建和注意力上下文长度不同，不能称为计算量严格相等的对照。</p>
+</section><section id="section-7"><span class="section-number">07</span><h2>局部扰动有收益，开放环境与复现条件仍需核实</h2><ul>
+<li><p><strong>已经测试的变化</strong>
+作者分别测试路径旁新增椅子、起始位置后移20厘米、光照变暗、箱子变小和目标桌移动30厘米。测试分布在洗衣装载、取衣和Box Carry三个任务，属于有限的外观、几何和位置扰动。</p>
+</li>
+<li><p><strong>尚不能推出的能力</strong>
+这组结果没有覆盖任意新任务或全新房间。方法仍依赖基础模型的语义和动作先验，三阶段生成也增加去噪预算及部署延迟。阅读时应将局部扰动鲁棒性与开放环境通用性分开。</p>
+</li>
+<li><p><strong>建议精读的部分</strong>
+先读第3.3节与附录S2.3，理解为什么要缓存干净动作，以及为什么最终执行的是第三阶段修正后的结果。再对照附录S1的平台状态和控制封装，判断自己的机器人是否具备相应传感器、模式切换和底层控制能力。</p>
+</li>
+<li><p><strong>读取与公开边界</strong>
+本期依据冻结的arXiv v1正文及附录，已读方法、实现、任务计分和完整成功率部分。来源记录的列表日期为2026年10月20日，首次发布日期未提供，不能用列表日期代替。阅读范围限于本轮有限来源，未运行代码或实机实验。</p>
+</li>
+<li><p><strong>复现资源</strong>
+正文说明基于openpi与预训练π0.5实现，但本轮来源不足以核实HAF-VLA专属代码、权重、示范数据包及各自许可证是否可用。论文自身的许可也未在冻结文本中确认，不能从论文可读推断代码、模型或数据可自由使用。</p>
+</li>
+</ul>
+<p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.26584v1">论文全文</a></p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.26584v1">https://arxiv.org/html/2610.26584v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><aside>仅本轮有限候选中选读HAF-VLA，阅读arXiv v1正文及附录。列表日期2026-10-20不是首次发布日期，后者未知。本篇读取完整且无读取异常，其他候选曾有请求失败或回退，另有一项未读。不代表全领域更新概况，未运行实验。</aside></article></body></html>
