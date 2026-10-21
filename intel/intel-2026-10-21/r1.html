@@ -1,0 +1,78 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>机器人情报｜2026-10-21</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>机器人情报｜2026-10-21</h1><p class=meta>2026-10-21T08:05:24.410428+08:00 · intel · 修订1</p></header><div class=lead><p>接触受阻时，机器人需要分清手是否移动、物体是否真正前进。本期重点读一项将触觉图像直接交给通用模型的仿真研究，再看 AGCO 的工厂试点协议与 Digit 5 的快充计划。研究、签约和实际运行是不同证据阶段。</p>
+<p>以2026年10月21日北京时间为本期期次。AGCO 公告日期为10月20日。论文的 arXiv 首次提交日为10月19日，PDF 扉页另署10月20日，两种日期不用于推定精确发布时间，按近七天补充收录。快充合作公告为10月15日。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">触觉图像怎样成为可执行的纠偏动作</a></li><li><a href="#section-2">同模型对照显示收益，但触觉没有让所有任务变好</a></li><li><a href="#section-3">部署仍受触觉歧义、纠偏能力和响应等待限制</a></li><li><a href="#section-4">AGCO 计划在 Hesston 工厂试点 Digit</a></li><li><a href="#section-5">近七天补充 · Digit 5 用快充缩短补能等待</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>触觉图像怎样成为可执行的纠偏动作</h2><p>Tsinghua University 与 Amap（Alibaba Group）的研究者关注一个具体问题。抓取、插入和材料判断所需的局部变形、滑移与接触几何，未必能从场景相机看清。本文把双指触觉 RGB 图像送进 GPT-6 Astra 已有的视觉接口，让它结合示范和在线反馈生成操作指令。</p>
+<h3>示范提供上下文，不另训每项任务的触觉策略</h3>
+<p>研究使用 GPT-6 Astra 的 xhigh 推理配置。UniVTAC 示范来自已发布的训练记录，OpenViTac 示范由官方脚本专家在训练模式下采集。成功示范作为上下文输入，成功率则在独立评测回合计算。论文没有披露底座模型的预训练配方，不能由本实验反推其训练数据。</p>
+<ol>
+<li><p>先把示范变成局部动作过程。每个片段保留起始图像与机器人状态、连续动作、执行回执，以及结束后的图像与状态。片段在评测前选定，贯穿整个回合可用，使模型能对照动作前后的接触变化。</p>
+</li>
+<li><p>再组织当前决策的输入。任务指令说明目标，场景相机呈现物体位姿与目标几何，双指触觉图像呈现局部变形与接触。当前末端位姿和其他本体状态帮助模型把看到的接触对应到拟议运动。相机沿用各基准配置，有腕部视角的任务也保留腕部图像。</p>
+</li>
+<li><p>最后执行并回看结果。模型输出一串末端平移增量、旋转增量和夹爪目标，基准适配器将其转换到机器人控制接口。执行回执与下一次观测进入交互记忆，供下一轮决策使用。记忆同时保留早期阶段的分散记录和最近反馈，并标出省略的时间段。</p>
+</li>
+</ol>
+<h3>为什么要把动作和结果一起保留</h3>
+<p>发出插入指令不等于插入成功，物体可能仍卡在孔口。新观测让模型检查真实进展，而不是沿示范一直执行。论文的 Insert Hole 成功案例中，模型结合触觉条带的相反倾斜与可见轴偏转，调整保持入口接触时的转动方向，再沿推断的孔道推进。这是一条仿真轨迹的解释，不能代表所有接触都能正确诊断。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>同模型对照显示收益，但触觉没有让所有任务变好</h2><h3>比较的是什么</h3>
+<p>仅视觉组与视触觉组使用同样的示范轨迹、片段位置、动作和抽样评测场景，差别是后一组在示范及在线观测中都加入双指触觉图像。两组均获得任务文本和机器人本体状态，均在仿真中评测。</p>
+<ul>
+<li><p>UniVTAC 的八项任务等权平均成功率，分别为仅视觉76.3%、视触觉93.8%。每组每项10个场景，共80个场景种子。这里是评测场景种子，不是训练随机种子。</p>
+</li>
+<li><p>OpenViTac 的十一项任务等权平均成功率，分别为仅视觉80.6%、视触觉81.8%。每组共130个场景种子，多数任务各10个，Insert Block v2 按三种形状各10个，其30个场景仍合成一个等权任务分数。该基准的 Grasp Chip 使用了调整后的成功判据，因此不宜把均值直接解读为按全部原始规则的成绩。</p>
+</li>
+</ul>
+<h3>完整成功与局部动作有区别</h3>
+<p>Grasp Chip 要求目标物保持完整，并完成抓取、转移及目标区域内的稳定承托放置。作者放宽的是特定释放与撤离顺序，不是只要夹住就算完成。另一个空罐选择失败案例中，模型最终选对了罐子，却耗尽动作预算、没有完成转移，仍然失败。</p>
+<h3>怎样理解差异</h3>
+<p>十九项任务中，六项加入触觉后改善、九项不变、四项下降。重量分类、空罐选择、插管及 Insert Block v2 属于下降项。作者提出，相机信息丰富程度可能影响触觉的边际收益，但没有通过统一相机条件的实验确认这个原因。</p>
+<p>论文也将结果与已发表的专用策略成绩并列，但这些基线数字来自各自报告，而 Astra 只评测了抽样场景，并非同场景、同条件重跑。本文因此优先呈现同模型输入对照，不把排行榜差值当作公平重测的结论。多数任务样本只有10个，一次成败就会改变该任务10个百分点，需要更大样本和重复执行来判断稳定性。</p>
+</section><section id="section-3"><span class="section-number">03</span><h2>部署仍受触觉歧义、纠偏能力和响应等待限制</h2><ul>
+<li><p>触觉变化小，不一定表示物体轻。论文的重量分类失败案例把弱剪切响应解释为低重量，却把重物放进了错误托盘。接触图像还受抓取位置、夹爪开度和运动影响，不能直接视为无歧义的重量测量。</p>
+</li>
+<li><p>能发现卡住，不一定能解开。插入失败案例中，模型不断改变姿态假设，却未把触觉变形稳定对应到有效纠偏方向。反复探测也会消耗后续抓取、搬运与放置所需的动作预算。</p>
+</li>
+<li><p>指令执行频率不等于模型闭环更新速度。示范与生成指令采用60 Hz 控制节奏，但仅视觉、视触觉两组的完整 API 响应中位耗时分别为15.4秒、14.0秒。这个计时包含提供方及网关等待，不含仿真执行，一次响应可以生成多条动作。下一次依赖新观测的纠偏仍要等待另一轮响应，不能把这些结果解释为实时真机控制。</p>
+</li>
+</ul>
+<p>后续最有价值的证据，是传感器噪声、漂移、标定误差和真实接触动力学下的机器人验证，以及陌生物体、任务、传感器与机器人配置上的系统评测。现有研究使用任务专属成功示范，适用时还覆盖对应类别或形状，不能据此认定无需示范适配即可泛化。</p>
+<p>论文原文
+https://arxiv.org/abs/2610.26846v1</p>
+</section><section id="section-4"><span class="section-number">04</span><h2>AGCO 计划在 Hesston 工厂试点 Digit</h2><p>10月20日，AGCO 与 Agility Robotics 的公告称，双方已签署商业协议，美国试点预计2027年开始，首站为堪萨斯州 Hesston 生产工厂。初期计划让 Digit 支持零件分拣、堆叠及料箱存放等操作。公告正文明确写的是未来试点，不能写成已经完成产线部署。</p>
+<ul>
+<li>试点面向重复、费力的制造任务，目标包括改善人体工学安全与生产效率。这些是计划价值，正文没有给出该试点的实测节拍、成功率、人工接管频次或持续运行结果。</li>
+<li>公告介绍 Agility Arc 用于部署和管理机器人群，但没有披露本试点的具体控制架构与训练流程，不据此补写机器人如何学会这些任务。</li>
+</ul>
+<p>阅读联合公告
+https://www.agilityrobotics.com/content/agco-and-agility-robotics-advance-smart-manufacturing-with-humanoid-robot-pilot-in-hesston-kansas-facility</p>
+</section><section id="section-5"><span class="section-number">05</span><h2>近七天补充 · Digit 5 用快充缩短补能等待</h2><p>10月15日，Agility 宣布选择 Nyobolt 作为 Digit 5 的电池技术伙伴。厂商称新系统可运行90分钟、充电9分钟，运行与充电时长之比为十比一，上一代 Digit 4 为二比一。这里比较的是补能时间关系，不是机器人完成任务的速度或成功率。</p>
+<p>厂商据此宣称一天可工作超过20小时，但公告未交代这些参数对应的负载、任务组合及完整现场测量条件，不能当作已验证的工厂可用率。搭载该电池的 Digit 5 预计2027年上半年开放早期使用，随后六至九个月逐步扩大供应。</p>
+<p>AGCO 试点公告使用 Digit 名称，没有说明配置为 Digit 5，也没有把该试点与上述快充系统绑定。因此两条消息分别说明客户试点计划和供电产品准备，不能合并成 AGCO 已确定采用快充版机器人的结论。</p>
+<p>阅读电池合作公告
+https://www.agilityrobotics.com/content/agility-robotics-selects-nyobolt-as-its-ultra-fast-charging-battery-technology-partner-for-digit-5</p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/pdf/2610.26846v1">https://arxiv.org/pdf/2610.26846v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://arxiv.org/abs/2610.26846v1">https://arxiv.org/abs/2610.26846v1</a> · page · 2026-10-19</p><p><a rel="noopener noreferrer" href="https://www.agilityrobotics.com/content/agco-and-agility-robotics-advance-smart-manufacturing-with-humanoid-robot-pilot-in-hesston-kansas-facility">https://www.agilityrobotics.com/content/agco-and-agility-robotics-advance-smart-manufacturing-with-humanoid-robot-pilot-in-hesston-kansas-facility</a> · page · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://www.agilityrobotics.com/content/agility-robotics-selects-nyobolt-as-its-ultra-fast-charging-battery-technology-partner-for-digit-5">https://www.agilityrobotics.com/content/agility-robotics-selects-nyobolt-as-its-ultra-fast-charging-battery-technology-partner-for-digit-5</a> · page · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><aside>本期仅依据冻结的一手材料，优先解释近期触觉研究与人形机器人工厂试点。部分官方账号读取失败，另有候选未读，不把有限覆盖解释为其他领域没有更新。旧文及未证实近期日期的材料未进入新闻主线。研究结果、产品参数和商业计划均为来源方报告，未独立复现实验或核验现场运行。 部分来源读取失败，本期仅采用已核实资料。</aside></article></body></html>
