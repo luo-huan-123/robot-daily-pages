@@ -1,0 +1,121 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>验收稿 2026-10-22｜SuperMimic 用可微世界模型训练全身控制</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>验收稿 2026-10-22｜SuperMimic 用可微世界模型训练全身控制</h1><p class="author-units">已核实作者单位<br>UC Berkeley</p><p class=meta>2026-10-22T00:41:53.147352+08:00 · paper · 修订1</p></header><div class=lead><p>SuperMimic 把不同参考动作背后的共同动力学学成一个可微模型，再用它产生训练控制策略所需的梯度。它的学习价值在于把“预测动作后果”和“利用后果改进动作”放进同一循环。训练集上的大规模覆盖与 G1 真机展示值得关注，但尚不能推出对新动作、复杂地形或物体操作的通用能力。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">动作越来越多，为什么仍可共享一个动力学模型</a></li><li><a href="#section-2">先采集，再拟合模型，最后沿模型改进策略</a></li><li><a href="#section-3">训练额外信息与机器人实际输入要分开</a></li><li><a href="#section-4">失败数下降，说明更完整地覆盖了训练动作</a></li><li><a href="#section-5">训练开销很低，但算力倍数并非等条件比较</a></li><li><a href="#section-6">速度指令接口学什么，哪些权重不随它更新</a></li><li><a href="#section-7">真机展示与复现还缺哪些证据</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>动作越来越多，为什么仍可共享一个动力学模型</h2><ul>
+<li><p>机器人要跟随跳跃、舞蹈、下蹲等参考，既要接近目标姿态，也要避免提前失稳。传统大规模跟踪常靠训练许多专用策略再蒸馏，或直接投入大量并行仿真训练通用策略。</p>
+</li>
+<li><p>SuperMimic 的出发点是同一机器人的不同动作共享身体与接触动力学。它用标准刚体仿真器产生训练记录，学习一个可微替代模型。策略梯度穿过这个学习模型，无须让原始接触仿真器本身可微。</p>
+</li>
+</ul>
+<p>这是一篇全身动作跟踪研究。PDF 首页的 v1 日期为 2026 年 10 月 20 日，本期阅读覆盖正文和附录 A–G。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>先采集，再拟合模型，最后沿模型改进策略</h2><ol>
+<li><p>让当前策略产生真实的仿真转移
+策略根据自身观测和参考目标给出动作，MuJoCo Warp 执行后产生下一状态、奖励与终止标签，写入有限大小的回放缓冲区。新记录替换最旧记录，较早策略的数据仍可用于拟合相同动力学。</p>
+</li>
+<li><p>用记录的动作训练世界模型
+从缓冲区采样 8 步连续窗口，由记录的起始状态出发，模型沿记录动作自回归预测。状态、奖励和无噪声观测用误差损失监督，终止概率用二元交叉熵监督，解析计算的输出头不另加学习损失。这一步更新世界模型参数，并非直接训练动作策略。</p>
+</li>
+<li><p>暂时固定模型，训练策略与价值网络
+从回放状态和对应仿真参数出发，在模型中想象 32 步。策略追求这段轨迹的跟踪奖励，再加价值网络对更远收益的估计。通过时间反向传播，动作怎样改变状态和奖励的梯度直接传回策略。价值网络则拟合想象轨迹计算出的 GAE 回报目标，每次轨迹内固定这些目标再更新价值网络。</p>
+</li>
+<li><p>回到仿真继续收集
+模型只在策略反向更新期间固定，不是先训练好便永久冻结。整个循环持续更新缓冲区、世界模型和策略，使后续拟合能接触到改进策略所访问的状态。</p>
+</li>
+</ol>
+<p>跟踪奖励考察身体位置、姿态、线速度和角速度，另考察根部位置与姿态，并约束动作平滑性与关节限位。短视地优化几步奖励可能忽略稍后才能体现的恢复收益，价值网络用于补上这个时间窗口之外的部分。它并不保证学习模型完全准确，优化的仍是仿真收益的替代目标。</p>
+</section><section id="section-3"><span class="section-number">03</span><h2>训练额外信息与机器人实际输入要分开</h2><ul>
+<li><p>世界模型读取完整状态、动作及每个回合的仿真参数，包括摩擦、关节标定偏移和躯干质心偏移，预测无噪声观测。价值网络也读取状态、目标和仿真参数。让模型显式知道这些变化，有助于把已知随机来源与需要拟合的动力学分开。</p>
+</li>
+<li><p>动作跟踪策略读取未来 10 帧参考，目标编码器把它压成 32 维运动表示。共享解码器再结合最近 10 帧自身观测，输出动作。观测包含相对默认姿态的 29 个关节位置、关节速度、IMU 基座角速度、基座坐标系下的重力方向和上一动作，不以原始图像或仿真摩擦参数为输入。</p>
+</li>
+<li><p>输出是归一化关节设定值，按动作尺度缩放并加上默认关节姿态，交给底层 PD 控制。论文特别提醒，低 PD 增益使这个设定值更像关节力矩的代理，不能将它理解为关节会直接、精确到达的位置。模型想象步长对应 50 Hz 控制，部署路径是观测和参考经策略生成动作，不是在线运行世界模型规划。</p>
+</li>
+<li><p>两种噪声承担不同任务。采集时给动作加噪，并记录真正执行的带噪动作，以拓宽世界模型的拟合范围。策略在想象轨迹中读取模型生成的无噪声观测后，再加传感器噪声，学习在观测不完美时控制。前者扩大动作覆盖，后者模拟感知误差。</p>
+</li>
+<li><p>物理参数随机化是另一层变化。它改变摩擦、标定和质心，参数提供给模型而不提供给部署策略。作者去掉了根部速度突变式扰动，理由是确定性模型难以捕捉这种状态不连续。</p>
+</li>
+</ul>
+</section><section id="section-4"><span class="section-number">04</span><h2>失败数下降，说明更完整地覆盖了训练动作</h2><p>评测使用过滤后的 BONES-SEED 训练集，共 129,514 段动作。每段从首帧运行一次，双方采用相同确定性仿真，足部摩擦为 1.0，无域随机化或观测噪声。各策略仍使用自己的执行器增益、动作尺度和原训练观测构造。以下计数来自同一评测口径。</p>
+<table>
+<thead>
+<tr>
+  <th>策略与训练预算</th>
+  <th>失败动作数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>SONIC 已发布检查点</td>
+  <td>179</td>
+</tr>
+<tr>
+  <td>SuperMimic，1 张 H100 训练 3 小时</td>
+  <td>25</td>
+</tr>
+<tr>
+  <td>SuperMimic，2 张 H100 训练 9.8 小时</td>
+  <td>0</td>
+</tr>
+</tbody>
+</table>
+<p>这里的失败指根部相对参考的高度误差超过 0.25 米，或倾斜误差超过 0.8。倾斜误差是参考与机器人骨盆坐标系中重力方向 z 分量之差的绝对值，并非 0.8 弧度。本评测不按末端位置偏差终止，SONIC 原本采用的成功判据也不同。零失败表示这些训练动作在这一协议下均未触发终止，不表示每个关节精确跟踪、未见动作泛化或真机永不失误。</p>
+<p>动作集也经过筛选。原始 G1 重定向数据中需要楼梯、箱子、椅子等环境支持的片段，以及穿地、悬空等不可行片段被移除。因此结果针对平地可执行动作，不能扩大为任意场景下的大规模全身技能覆盖。</p>
+</section><section id="section-5"><span class="section-number">05</span><h2>训练开销很低，但算力倍数并非等条件比较</h2><p>作者报告单张 H100 的 3 小时完整训练循环已超过 SONIC 已发布检查点的归一化回报，检查点评测在训练后运行，未计入这 3 小时。归一化回报是完整回合的未折扣奖励总和除以其可能最大值，提前终止会降低得分。</p>
+<p>SONIC 的报告预算为 128 张 L40、7 天，SuperMimic 的训练数据则为 264.56 小时，少于 SONIC 的 611 小时。GPU 型号也不同，实际峰值算力利用率未知。因此超过千倍的 GPU 小时差是跨配置账面开销比较，不能直接作为等硬件、等数据条件下的算法效率倍数。</p>
+<p>更有参考价值的是 LAFAN1 受控对照。双方共享动作、观测、奖励、终止、随机化、网络规模和评测协议，但 PPO-Sim 使用自己的 PPO 超参数及更多并行环境。在 40 段、2.45 小时动作上，SuperMimic 单 GPU 在 1.2 小时内达到评测回报 0.82，PPO-Sim 在最多 8 GPU、18 小时预算内未达到。这个结果支持该训练方案在此设置中的效率优势，尚不是对所有 PPO 调参方案的穷尽比较。</p>
+<p>机制消融还比较了都在世界模型中训练的两种更新方式。在 LAFAN1 的步行、跑步和冲刺片段上，可微 actor–critic 以约为 PPO-WM 的 1/64 的想象步数达到后者的最佳训练回报。这一局部消融说明收益不只来自更快的模型推进，不能把该倍率直接套到全动作库或真机。论文未在这些曲线中报告训练种子波动范围。</p>
+</section><section id="section-6"><span class="section-number">06</span><h2>速度指令接口学什么，哪些权重不随它更新</h2><ol>
+<li><p>把稀疏命令接到共享控制器
+速度编码器读取平面目标速度、目标偏航角速度，以及最近 10 帧观测的特征，输出同一运动潜变量。共享解码器再结合观测生成关节动作，无须为这个接口另训练一套动力学模型。</p>
+</li>
+<li><p>用接口自己的目标训练编码器
+RL 版本通过世界模型优化速度跟踪奖励，命令混合参考动作导出的速度与范围内随机采样的速度。在参考命令上，还以均方误差把速度潜变量拉近动作编码器的潜变量，并停止梯度进入作为目标的动作潜变量。</p>
+</li>
+<li><p>分清共享与更新
+速度奖励的梯度穿过共享解码器，只更新速度编码器，解码器权重仍由动作跟踪目标训练。论文的“蒸馏”基线则用参考动作读出的命令和动作跟踪奖励训练速度编码器，并非给两者同一个速度奖励。作者也承认，目前尚未验证让速度奖励一起更新解码器是否更有益。</p>
+</li>
+</ol>
+<p>该接口仍是初步仿真研究。每种方法只有一个训练种子，在 672 个命令上分别从站立测试 4 次、每次 5 秒，用末尾 2 秒的平均速度误差除以命令大小，再取未跌倒试次的中位数。RL 编码器在 650 个命令上误差较低，蒸馏基线在 15 个上较低，并在 7 个快速转弯命令上全部试次跌倒。这个结果支持该命令范围内的控制改善，不能视作跨机器人迁移证据。</p>
+</section><section id="section-7"><span class="section-number">07</span><h2>真机展示与复现还缺哪些证据</h2><ul>
+<li><p>已经展示
+一个通用动作跟踪器在 Unitree G1 上执行跳跃、侧滚、90 度翻转与原地 360 度翻转，不做逐动作调参。正文提供的是动作展示，没有与前述大规模仿真基准同口径的真机重复成功率。</p>
+</li>
+<li><p>尚不能推出
+世界模型仅用仿真转移训练，目前只训练平地动作，没有地形或物体交互。论文没有证明同一模型可以直接换到另一种机器人，也没有证明同一套动作接口能完成开放场景移动操作。</p>
+</li>
+<li><p>建议怎样继续读
+优先精读第 3 节和附录 A、F，检查可微替代模型怎样给策略梯度、部署观测缺少哪些训练信息，以及失败判据与任务能力之间的差别。本文未运行实验，结果均为作者报告。</p>
+</li>
+<li><p>复现入口与可用性
+论文提供项目入口，并称训练采用公开的 G1 重定向 BONES-SEED 子集。本轮未读取项目站点或下载代码、权重和数据，不能确认 SuperMimic 代码、检查点与最终过滤数据包是否完整可用。论文许可与代码、权重、数据各自许可均未在本次证据中核实，不把能读取论文当作获得全部复现材料。</p>
+</li>
+</ul>
+<p>论文全文
+https://arxiv.org/pdf/2610.28480</p>
+<p>项目入口
+https://supermimic.github.io</p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/pdf/2610.28480">https://arxiv.org/pdf/2610.28480</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><aside>本期仅采用冻结来源中的 SuperMimic PDF 全文，阅读正文及附录 A–G。输入来源采集存在失败与未覆盖项，不代表全领域没有其他更新。本来源 HTML 读取失败后取得 PDF，未获可用绑定图像，故不配图。未联网补采、未运行实验、未核实复现材料完整性。 部分来源读取失败，本期仅采用已核实资料。</aside></article></body></html>
