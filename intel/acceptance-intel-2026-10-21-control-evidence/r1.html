@@ -1,0 +1,75 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>验收稿 2026-10-21｜让未来预测与空间推理接受动作检验</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>验收稿 2026-10-21｜让未来预测与空间推理接受动作检验</h1><p class=meta>2026-10-21T22:04:29.768924+08:00 · intel · 修订1</p></header><div class=lead><p>预测未来对控制有用，关键在于它能否帮助选对动作。DirectWAM 用示范动作的误差改造未来预测器，GPT-GEAR 则检验通用多模态模型能否通过工具把空间判断变成可执行运动。两者分别涉及专用模型训练与推理时的闭环执行，不能用不同协议下的成功率直接排名。</p>
+<p>两篇论文的 arXiv 首次提交日均标注为 2026 年 10 月 20 日。本期按近期论文观察收录，日期证据不提供精确发布时刻，也不证明实验发生在该日。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">DirectWAM 用动作正确性衡量未来预测</a></li><li><a href="#section-2">两阶段训练，把示范动作误差传回未来预测器</a></li><li><a href="#section-3">仿真主结果支持更好的单步控制，但尚未追平完整教师</a></li><li><a href="#section-4">180 毫秒属于模型侧计时，真机仍是少量重复任务</a></li><li><a href="#section-5">GPT-GEAR 用观测和工具反馈形成闭环</a></li><li><a href="#section-6">几何约束与真机小样本揭示直接控制的边界</a></li><li><a href="#section-7">来源与本期覆盖</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>DirectWAM 用动作正确性衡量未来预测</h2><p>论文列出的机构包括 ByteDance 与 New York University。研究以 LingBot-VA 为实例，保留先预测未来、再生成动作的串联结构，尝试把两个模块的多步扩散推理都变成单次计算。未来表示是供控制使用的中间结果，而不是最终要交付的视频。</p>
+<ul>
+<li>作者先固定动作侧噪声、改变视频侧噪声，观察未来变化怎样传到动作。相关闭环干预没有检测到重新采样的系统性收益，但不能因此断言随机性完全无用。</li>
+<li>直接删掉推理步骤仍会降低控制成功率。需要学习新的单步映射，不能把多步教师原样截短就视作同等模型。</li>
+</ul>
+<p>关键设计是用动作后果衡量未来表示。两处视觉误差即使大小相近，也可能对动作产生不同影响。论文的局部敏感性分析用于诊断这种不均匀性，不是给训练规定一个固定的视觉子空间。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>两阶段训练，把示范动作误差传回未来预测器</h2><ol>
+<li><p>先训练动作模块。以已发布的 LingBot-VA 后训练检查点初始化，固定视频模块，把示范中的未来表示送给动作模块。训练目标是让一次计算输出的动作序列接近示范动作，而非重现每个去噪中间状态。</p>
+</li>
+<li><p>再训练未来预测模块。此时固定刚学好的动作模块，让未来预测器从当前上下文生成自己的未来表示。动作模块同时读取这个预测和同一上下文，输出动作序列。与示范动作的均方误差通过固定的动作模块反向传播，只更新未来预测器。固定参数不意味着梯度不能穿过该模块。</p>
+</li>
+<li><p>按配置加入未来重建约束。它把预测拉向示范的未来潜在表示，作用是限制偏离，动作误差仍是主要训练反馈。附录中 LIBERO-Long 的配置不使用这一约束，RoboTwin 使用权重 0.01，不能把两个训练配置合成同一个。</p>
+</li>
+</ol>
+<p>部署时保留未来到动作的接口，但两个模块各计算一次，不再反复采样去噪。论文将条件输入统称为上下文，未逐项列明其中全部观测、机器人状态字段及底层动作坐标定义。因此可以解释模型间的数据流，不能据此补造可直接复用的机器人接入接口。</p>
+<figure><img src="https://arxiv.org/html/2610.28122v1/figures/main_figure.png" alt="作者原图：S1.F1" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.28122v1/figures/main_figure.png" alt="作者原图：S1.F1" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>按图注依次看视频随机性、直接减少步骤造成的差距，以及经动作监督学习的单步串联结构。此图帮助区分少采样与重新训练，不单独证明所有机器人都能获得同等加速。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.28122v1#S1.F1">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.28122v1/figures/main_figure.png">原图来源</a></p></figcaption></figure></section><section id="section-3"><span class="section-number">03</span><h2>仿真主结果支持更好的单步控制，但尚未追平完整教师</h2><p>RoboTwin 2.0 主表中，DirectWAM 的平均成功率为 85.4%，Flash-WAM 为 78.2%，完整 LingBot-VA 教师为 90.7%。前两者都使用视频与动作各一次计算。主表覆盖全部 50 项任务，每项使用 50 个评测回合，并分别报告 Clean 和随机化条件。这里比较的是作者报告的任务成功率，不能解读为连续生产的无故障率。</p>
+<p>主表也显示，直接把教师截成视频与动作各单步时，平均成功率只有 54.9%。这支持重新训练单步映射的必要性。DirectWAM 缩小了与教师之间的差距，但没有消除差距。</p>
+<p>不要把不同实验口径混在一起。论文前部的降步数分析中，RoboTwin 单步结果为 57.6%，而主表为 54.9%。前者属于每项 10 个回合的其他成功率评测，主表每项为 50 个回合。本文比较统一使用主表，两个数字不能拼成同一轮实验的增益。</p>
+<p>LIBERO 的四套任务平均成功率报告为 97.1%，每项评测 100 个回合。但表中的 Flash-WAM 结果来自其原论文，缺少对应检查点，作者明确说明不是严格匹配的复现。因此本期不把这组跨论文差值用作主要优势证据。</p>
+</section><section id="section-4"><span class="section-number">04</span><h2>180 毫秒属于模型侧计时，真机仍是少量重复任务</h2><p>模型推理延迟从完整教师的 5042 毫秒降至 DirectWAM 的 180 毫秒，约为 28 倍加速。计时在单张 80 GB 显存 GPU 上进行，先预热 500 次，再统计 500 次运行的中位数。原文没有给出具体 GPU 型号，这组计时也不是从接到指令到完成抓取、搬运和放置的总时长。</p>
+<p>真机使用带夹爪的 Galaxea A1、外部 RealSense D435 相机和腕部 D405 相机。作者为抓香蕉、倒水、放茶壶三个任务分别提供 50 条训练示范，再对每种方法每项任务评测 20 次。它是经过任务示范训练后的验证，不是换平台后直接零样本部署。</p>
+<ul>
+<li>抓香蕉时，DirectWAM 与完整教师均成功 19/20 次，Flash-WAM 为 18/20 次。</li>
+<li>倒水时，三者依次为 11/20、9/20、2/20 次。</li>
+<li>放茶壶时，三者依次为 12/20、12/20、8/20 次。</li>
+</ul>
+<p>这些计数显示，在本次小样本任务中，单步方法保留了有用的控制能力。它们还不能证明所有任务上都与教师等效，更不能证明长期运行可靠性。该段实验未进一步说明倒水量、放置误差阈值等成功判据细节，不能把演示中看起来完成的局部动作当作独立核实的完整成功。</p>
+<figure><img src="https://arxiv.org/html/2610.28122v1/figures/realworld_top6_3x6.png" alt="作者原图：S4.F5" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.28122v1/figures/realworld_top6_3x6.png" alt="作者原图：S4.F5" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>按图注从左到右看每项任务的六个关键帧，每帧并列外部视角与腕部视角。它们展示代表性执行过程，成功率仍须看正文中的重复试验计数。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.28122v1#S4.F5">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.28122v1/figures/realworld_top6_3x6.png">原图来源</a></p></figcaption></figure></section><section id="section-5"><span class="section-number">05</span><h2>GPT-GEAR 用观测和工具反馈形成闭环</h2><p>另一篇论文由 Youwei Zhou 等作者提出 GPT-GEAR，评估 GPT-6 Astra 直接生成操作命令的能力。它没有另接一个专用 VLA 或 WAM 来决定动作，也没有为任务更新模型参数。实验通过 Codex 调用模型，推理强度设为 high。这里描述的是论文的实验设置。</p>
+<ol>
+<li><p>读取环境。模型接收任务语言、相机 RGB 图像、机器人自身状态和交互历史。相机标定、深度图、触觉反馈是随实验条件启用的额外输入，并非每项实验都有。Observe 可以回取历史观测，Reference 可以把示范视频关键帧、文字步骤或动作轨迹加入上下文。</p>
+</li>
+<li><p>生成并执行命令。模型经 Act 指定末端平移增量、四元数旋转增量、夹爪目标以及执行步数上限。双臂各有独立上限，由控制器同步执行，一侧到达目标后保持姿态。控制器检查运动学和关节约束，但这些检查不保证避碰或抓取成功。</p>
+</li>
+<li><p>根据结果继续。工具把新观测、执行反馈和剩余位姿误差写回历史，模型据此调整下一步。仿真中由环境的官方任务判据确认是否完成，再结束交互，不能把模型说“完成了”当作成功。示范的作用是提供上下文参考，运动参数仍须结合当前观测确定。</p>
+</li>
+</ol>
+</section><section id="section-6"><span class="section-number">06</span><h2>几何约束与真机小样本揭示直接控制的边界</h2><p>LIBERO-GeoMotion 刻意使用相对简单的语义目标，把困难放在动作上。它包含九类任务、36 个场景变体，例如把书竖直放进窄槽、保持合适姿态穿过狭窄开口，以及放好杯子后继续关门。只到达目标位置，未必满足姿态和后续动作约束。</p>
+<p>不给上下文示范时，GPT-6 Astra 仅完成其中 4 个场景变体，成功率为 11.1%。给示范后，作者报告总体成功率为 50.0%，但仍有一类任务完全失败。这是同一专项基准中两种上下文条件的对比，说明示范能帮助动作选择，不能推出所有几何约束都已解决。</p>
+<p>真机另用 ROKAE Helios 系列双臂机器人测试五项任务。每项、每种条件只做五次，零示范共成功 10/25 次，即 40%，加入一个相似任务示范后成功 20/25 次，即 80%。这里的“一例学习”是把示范放入上下文，并非用一条数据微调参数。小样本结果不足以说明长期部署稳定性。</p>
+<p>DirectWAM 和 GPT-GEAR 回答不同问题。前者研究如何训练更高效的未来到动作映射，后者研究通用模型借助工具与上下文能执行到什么程度。两项研究的任务、输入、训练或示范条件不同，本期不作跨研究成功率排名。</p>
+</section><section id="section-7"><span class="section-number">07</span><h2>来源与本期覆盖</h2><p>DirectWAM 原论文
+https://arxiv.org/html/2610.28122v1</p>
+<p>GPT-GEAR 原论文
+https://arxiv.org/html/2610.28259v1</p>
+<p>日期辅助证据来自两篇论文对应的 arXiv 摘要页，均标注首次提交于 2026 年 10 月 20 日。它们只承担日期核对，不算额外新闻，也不能确立滚动 48 小时内的精确发布时间。</p>
+<p>本期仅据本轮有限公开材料选读，没有运行模型或复现实验。采集记录存在失败和未覆盖部分，不能据此断言行业无其他进展。尚未核实一手归属的融资报道未纳入。后续更值得跟踪的是明确的完整任务判据、更多真机重复试验，以及把通信和机器人执行纳入后的总耗时。</p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.28122v1">https://arxiv.org/html/2610.28122v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://arxiv.org/abs/2610.28122v1">https://arxiv.org/abs/2610.28122v1</a> · page · 2026-10-20</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.28259v1">https://arxiv.org/html/2610.28259v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://arxiv.org/abs/2610.28259v1">https://arxiv.org/abs/2610.28259v1</a> · page · 2026-10-20</p><aside>仅本轮有限来源中的两项近期论文观察。采集有失败与未覆盖部分。实验均为作者报告，未独立复现，未核验仓库运行条件。 部分来源读取失败，本期仅采用已核实资料。</aside></article></body></html>
