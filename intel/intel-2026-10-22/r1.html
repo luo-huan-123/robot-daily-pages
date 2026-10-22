@@ -1,0 +1,99 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>机器人情报｜2026-10-22</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>机器人情报｜2026-10-22</h1><p class=meta>2026-10-22T08:06:18+08:00 · intel · 修订1</p></header><div class=lead><p>接触任务需要的不只是逼真的视频，还要让画面、触觉和动作后果相互一致。PhysCanvas 尝试用这样的世界模型评估并改进机器人策略。本页展开它如何学习失败、如何闭环生成观测，以及真机结果的适用范围。</p>
+<p>时间范围为近七天研究进展与近期公司公告。PhysCanvas 的 arXiv 首次提交日标为10月20日，这不等于所读版本的发布时间。Agility 的扩建公告正文署10月21日，作为独立产业消息简述。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">PhysCanvas 要预测动作后果，而不只是生成好看的视频</a></li><li><a href="#section-2">把多种观测放到同一张画布上</a></li><li><a href="#section-3">先训练世界模型，再约束它保留真实成败</a></li><li><a href="#section-4">预测怎样接回动作策略</a></li><li><a href="#section-5">在想象中训练时，更新的是动作策略</a></li><li><a href="#section-6">结果支持有限任务内的评估与改进</a></li><li><a href="#section-7">Agility 把软件、部署与维修放到同一处</a></li><li><a href="#section-8">本期覆盖与值得跟踪的证据</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>PhysCanvas 要预测动作后果，而不只是生成好看的视频</h2><p>作者署名机构包括 Institute of Automation, Chinese Academy of Sciences、Anyverse Robotics、Open-Phoenix Team、National University of Singapore、Xi’an Jiaotong University 和 Beijing Institute of Technology。本期读取论文全文及附录，arXiv 独立日期证据标明首次提交日为2026年10月20日，不能据此确定滚动48小时内首发。</p>
+<h3>接触任务的困难</h3>
+<p>物体滑落后，预测画面、指尖接触和任务成败必须描述同一件事。若模型仍给出稳定接触或成功结局，动作策略就可能从错误反馈中学习。PhysCanvas 因而同时预测多视角画面、触觉图像、标记位移与任务状态。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>把多种观测放到同一张画布上</h2><h3>共享表示的理由</h3>
+<p>相机画面与光学触觉图像都具有空间结构，团队希望复用预训练视频模型的视觉与时间先验。触觉图像保留局部接触形状，标记位移记录传感器表面标记相对参考位置的三维变化，并映射到 RGB 三通道。它们与相机画面和任务状态共同进入一个画布，由同一个视频 VAE 编码。</p>
+<h3>动作如何进入预测</h3>
+<p>双臂关节与夹爪目标先经过机器人 URDF 的正向运动学，再结合相机内外参投影成与各视角对齐的动作图像。动作图像也由共享 VAE 编码，随后按位置加入画布特征，让模型知道哪些区域受运动指令影响。任务状态区域不直接加入动作特征，以促使它从其他模态判断结果。</p>
+<h3>任务状态的作用</h3>
+<p>画布中的任务状态用颜色区分任务、纹理区分是否完成，是帮助世界模型学习任务语义的辅助预测目标。它不作为下游策略的输入，不能把“预测成功”本身当作机器人已经完成任务。</p>
+<figure><img src="https://arxiv.org/html/2610.28613v1/main_fig.png" alt="作者原图：S3.F3" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.28613v1/main_fig.png" alt="作者原图：S3.F3" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>这张总览图用于理解统一画布、动作条件生成与三类一致性监督的关系。它展示方法组织，不是接触预测准确率或真机成功率的证据。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.28613v1#S3.F3">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.28613v1/main_fig.png">原图来源</a></p></figcaption></figure></section><section id="section-3"><span class="section-number">03</span><h2>先训练世界模型，再约束它保留真实成败</h2><ol>
+<li><p><strong>从策略执行中收集训练数据</strong><br />
+示范先用于训练任务策略，策略的随机真机执行再产生世界模型所需轨迹，包括抓空、过早松手、交接失准和插入不完整等失败。论文报告世界模型使用3,805条真机轨迹训练，另留每项任务80条测试轨迹。失败数据让它看到不完美策略会到达的状态。</p>
+</li>
+<li><p><strong>学习动作条件下的未来观测</strong><br />
+团队以 Wan2.2-TI2V-5B 初始化，固定视频 VAE，微调生成 Transformer。流匹配目标监督未来多模态画布的预测。训练连续展开四段，每段预测八帧，起始三视角图像始终固定，而当前参考随模型上一段的末帧更新，使训练也接触自身预测带来的偏差。</p>
+</li>
+<li><p><strong>单独训练三种评估网络</strong></p>
+<ul>
+<li>场景网络比较初始参考与后续图像，用真实图像及人工标注的生成结果学习区分正常运动与场景漂移。</li>
+<li>状态网络只用真实执行的完成标注训练，完成前与失败轨迹为负例，完成后的帧为正例。</li>
+<li>模态网络检查 RGB、触觉图像和标记位移是否相容，正例来自同步观测，负例包括替换触觉配对及人工识别的生成错误。</li>
+</ul>
+</li>
+<li><p><strong>固定评估网络，继续更新世界模型</strong><br />
+场景与模态评分推动预测保持一致。状态监督则要求生成图像的成败判断与对应真实图像一致，真实失败仍应预测为失败。训练保留原流匹配损失，梯度经过固定的评估网络和 VAE 解码器回传到世界模型，更新的是生成器。</p>
+</li>
+</ol>
+</section><section id="section-4"><span class="section-number">04</span><h2>预测怎样接回动作策略</h2><h3>策略真正读取什么</h3>
+<p>三类策略都读取当前同步的三路 RGB、四块触觉传感器的标记位移，以及14维双臂关节状态。这里的触觉输入是位移网格，虽然世界模型也生成触觉图像，策略并不直接读取那部分图像。FM 与 ACT 按任务单独训练，π0.5 共用跨任务检查点并额外接收语言指令。它们的训练来源与预训练不同，不能把三者表现当成受控的架构优劣比较。</p>
+<ol>
+<li><p><strong>从真实初始观测出发</strong><br />
+三路初始 RGB 作为整次展开中固定的场景参考，完整初始观测作为会更新的多模态参考。策略根据当前观测、关节状态及适用的语言指令，生成连续关节目标。世界模型另有任务文本条件，FM 与 ACT 本身不接收语言，也不意味着世界模型没有任务提示。</p>
+</li>
+<li><p><strong>将一段动作交给世界模型</strong><br />
+在10 Hz接口下，FM 与 ACT 每次给32步动作，π0.5 给16步。π0.5 内部输出32维，但实际机器人接口只用前14维作为双臂绝对关节目标。世界模型把动作序列拆成每段最多八步，结合当前机器人状态渲染动作图，再预测对应多模态帧。</p>
+</li>
+<li><p><strong>更新观测，再决定下一段动作</strong><br />
+每段最后的预测帧更新当前参考，最后一条关节目标更新模型回路中的机器人状态。观测适配器提取策略需要的 RGB 和标记位移，附上更新的关节状态。策略执行完整个动作块后才重新规划。除初始观测外，回路使用的是生成观测，没有借用记录中的真实未来帧。</p>
+</li>
+</ol>
+</section><section id="section-5"><span class="section-number">05</span><h2>在想象中训练时，更新的是动作策略</h2><h3>从监督微调策略出发</h3>
+<p>论文用 PhysCanvas 对 FM 与 π0.5 做 GRPO 后训练。ACT 不符合这套 GRPO 实现所假设的扩散或流匹配形式，因此只参与评估。FM、ACT 的起点按任务由成功真机执行训练，π0.5 则使用共享的多任务检查点，不能据此认定三者使用完全相同的监督数据。</p>
+<h3>同一起点比较不同尝试</h3>
+<p>每个真实初始条件生成八条候选轨迹。固定的状态网络从生成 RGB 判断结果，末帧成功概率达到0.7时得到二值成功奖励。GRPO 在组内比较成败，用相对优势更新动作策略。世界模型和状态网络保持固定，策略梯度不穿过世界模型，也没有训练价值网络。</p>
+<h3>两种训练目标应分开理解</h3>
+<p>世界模型后训练要求忠实再现真实成功和失败，策略后训练则利用固定模型提供的反馈寻找更好的动作。这样做的价值是减少策略改进阶段额外采集真机轨迹的需求，训练世界模型本身仍依赖真实执行数据。</p>
+</section><section id="section-6"><span class="section-number">06</span><h2>结果支持有限任务内的评估与改进</h2><h3>先看能否估计策略表现</h3>
+<p>在四项任务上，作者将 ACT、FM、π0.5 分别放入加入状态监督前后的世界模型，并与真机执行比较。每个任务与策略组合使用不同时间采集的三批场景，每批20个，由多名专家共同判断真机任务是否成功。加入状态监督后，各任务 Pearson 相关系数的算术平均由0.602提高到0.885。这衡量各评估批次成功率的相关性，不是单次成功预测准确率，也不能保证绝对成功率无偏。</p>
+<h3>再看想象训练能否帮助真机</h3>
+<p>π0.5 在监督微调基线、基础世界模型内强化学习、一致性后训练世界模型内强化学习三种设置下，四任务等权平均真机成功率分别为59.1%、67.5%和70.8%。最后一种相对基线提高11.7个百分点。两种强化学习设置都由固定的状态网络评分，区别在作为环境的世界模型是否经过一致性后训练。表4的均值和总体标准差来自三次运行，不能写成三个独立训练种子。</p>
+<h3>平均提升没有覆盖每项任务</h3>
+<p>π0.5 的瓶盖任务从基线88.3%变为基础世界模型内训练后的90.0%，再变为一致性世界模型内训练后的86.6%。FM 在试管与魔方任务中仍未成功。结果支持特定任务组合的平均改善，不能说明一致性监督必然提高所有策略、所有任务的成功率。</p>
+<h3>完整任务的口径</h3>
+<ul>
+<li>试管任务需要左手拿起并交给右手，右手借助桌面调整姿态后插入架中。</li>
+<li>积木任务需要拆开连接的两块积木，并分别放入对应颜色的袋子，只放好一块仍算未完成。</li>
+<li>瓶盖任务需要拧开瓶盖，并将瓶盖与瓶身分别放到桌上。</li>
+<li>魔方任务仅恢复一次单面转动造成的扰动，测试的是协调操作与视触觉一致性，未测试任意打乱后的解题规划。</li>
+</ul>
+<h3>适用范围</h3>
+<p>实验平台为桌面 ARX AC One 双臂机器人，使用三台相机和四个 Xense 指尖传感器，视觉、触觉与机器人状态同步采集。动作投影依赖对应 URDF 与相机标定。这些实验尚不能证明换机器人或触觉传感器后可直接使用，本文也不把所报告的模拟交互流程解释为已达到实时生成。</p>
+</section><section id="section-7"><span class="section-number">07</span><h2>Agility 把软件、部署与维修放到同一处</h2><h3>10月21日的扩建计划</h3>
+<p>Agility Robotics 在同日署名公告中宣布，拟在匹兹堡使用一处50,000平方英尺的新设施，比现有当地规模增加约35,000平方英尺。它将集中软件与 AI、客户部署、支持与维修团队。公司预计员工可在2026年底前开始进入，公告描述的是计划，不能视为设施已经全面运行。</p>
+<h3>为什么这项变化值得关注</h3>
+<p>公告所列工作包括验证客户流程、用仿真和实机开发新技能、支持机器人群运行，以及复杂维修。这说明扩张的内容包含交付后的服务能力。公司希望把现场经验反馈给软件和技能开发，但公告未给出扩建带来的效率提升实测值。</p>
+<h3>订单的必要限定</h3>
+<p>公司称新增四家来自汽车、消费品和农业等领域的客户，并已获得超过3亿美元的 Digit 5 多年订单，但订单仍取决于特定合同里程碑的满足。该数字不能替代已交付台数、已确认收入或持续生产表现。
+<a rel="noopener noreferrer" href="https://www.agilityrobotics.com/content/agility-robotics-expands-pittsburgh-presence-to-support-growing-customer-deployments">阅读 Agility 原公告</a></p>
+</section><section id="section-8"><span class="section-number">08</span><h2>本期覆盖与值得跟踪的证据</h2><p>本页重点采用 PhysCanvas 论文与 Agility 公司公告，实验和商业指标均按来源方报告转述，未独立复现。后续值得跟踪的是视触觉世界模型在更多传感器与平台上的验证，以及部署服务扩建后的实际交付与运维表现。
+<a rel="noopener noreferrer" href="https://arxiv.org/html/2610.28613v1">阅读 PhysCanvas 论文与附录</a></p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.28613v1">https://arxiv.org/html/2610.28613v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://arxiv.org/abs/2610.28613v1">https://arxiv.org/abs/2610.28613v1</a> · page · 2026-10-20</p><p><a rel="noopener noreferrer" href="https://www.agilityrobotics.com/content/agility-robotics-expands-pittsburgh-presence-to-support-growing-customer-deployments">https://www.agilityrobotics.com/content/agility-robotics-expands-pittsburgh-presence-to-support-growing-customer-deployments</a> · page · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><aside>本期仅采用所列论文和公司公告。部分国内官网、其他网页及社交账号未能完整读取，覆盖有限，不能据此判断未覆盖领域没有更新。研究结果和商业指标均按来源方报告转述，未独立复现。 部分来源读取失败，本期仅采用已核实资料。</aside></article></body></html>
