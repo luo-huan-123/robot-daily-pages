@@ -1,0 +1,146 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>HuMiT用稀疏参考降低全身遥操作延迟｜2026-10-23</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>HuMiT用稀疏参考降低全身遥操作延迟｜2026-10-23</h1><p class="author-units">已核实作者单位<br>Tsinghua IIIS · The Chinese University of Hong Kong · Renmin University of China · Tsinghua College AI · Tsinghua Weiyang College</p><p class=meta>2026-10-23T09:46:59.856980+08:00 · paper · 修订1</p></header><div class=lead><p>遥操作机器人接球，既要跟得快，也要把全身动作接续好。HuMiT把在线参考缩为根部命令和双腕、双踝位姿，让完整重定向参考承担训练监督。本文重点解释这一接口为何能省掉在线IK和未来帧等待，并区分延迟改善、跟踪精度与真机任务成功。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">参考越密，为什么遥操作可能越慢</a></li><li><a href="#section-2">完整参考负责教，紧凑参考负责用</a></li><li><a href="#section-3">从人体骨架到G1关节力矩</a></li><li><a href="#section-4">65毫秒衡量的是外部动作延迟</a></li><li><a href="#section-5">紧凑参考在高动态动作上仍付出代价</a></li><li><a href="#section-6">真机已经做到了什么，尚缺什么证据</a></li><li><a href="#section-7">优先读非对称监督，再判断复现条件</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>参考越密，为什么遥操作可能越慢</h2><p>操作者挥手或接球时，机器人需要及时响应。逐帧优化的人体到机器人重定向增加计算时间，依赖未来参考的控制器还必须等新帧到达。上下身分开控制则不利于需要手臂与平衡同步的动作。</p>
+<p>HuMiT检验的是部署时是否一定要输入完整参考。它保留根部高度、线速度和角速度，以及双腕、双踝的当前位姿。这里的位姿同时包含位置和朝向，不是仅给四个空间点，也不是只靠四点就能忽略机器人自身状态。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>完整参考负责教，紧凑参考负责用</h2><ol>
+<li><p>先准备可跟踪的机器人示范
+从AMASS、LAFAN1和BONES-SEED筛掉物理不可行的动作，对每段动作增加矢状面镜像，交换左右关节并镜像根部轨迹。再离线求解IK，得到含根部、身体部位及关节状态的完整机器人参考。镜像扩展的是动作数据，IK在准备数据时执行。</p>
+</li>
+<li><p>actor学习怎样跟踪当前命令
+训练时从机器人完整参考抽取紧凑子集，与本体状态一起输入actor。PPO在仿真中更新策略，奖励根据完整参考衡量根部的位置和朝向误差，以及各身体部位的位置、朝向和速度误差，并惩罚脚滑与过快的动作变化。actor没有看到完整参考，并不意味着训练只监督四个关键点。</p>
+</li>
+<li><p>critic利用仿真中更丰富的信息估值
+critic读取本体状态、完整参考，以及仿真中的真实根部线速度和身体相对位姿，帮助估计价值。actor和critic通过PPO联合更新，完整参考也用于初始化可行仿真状态。这不是先训练一个教师、再蒸馏学生的流程。</p>
+</li>
+<li><p>用环境随机化应对执行差异
+训练随机化外力、接触摩擦与恢复系数、连杆质量、电机增益、转子惯量参数和初始关节状态。末端质量扰动更强，用于近似小负载变化。这与前面的左右镜像作用不同，也不代表策略已经接受重负载搬运训练。</p>
+</li>
+</ol>
+<figure><img src="https://arxiv.org/html/2610.29903v1/images/system_v3.png" alt="作者原图：S4.F2" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.29903v1/images/system_v3.png" alt="作者原图：S4.F2" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>先看人体动作经尺度标定形成紧凑参考，再区分actor和critic的输入。actor使用紧凑参考与本体状态，完整参考和仿真特权状态服务于训练，不能把它们误认为部署时必需的观测。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.29903v1#S4.F2">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.29903v1/images/system_v3.png">原图来源</a></p></figcaption></figure></section><section id="section-3"><span class="section-number">03</span><h2>从人体骨架到G1关节力矩</h2><ol>
+<li><p>感知与尺度标定
+PICO 4 Ultra头显配合两个手柄和绑在小腿上的两个Motion Tracker，由设备运行时估计24点人体骨架，以约80 Hz通过Wi-Fi发送。每次遥操作开始时，操作者摆参考姿态，系统按人和机器人的肢段长度计算比例。关键点位置按比例映射，朝向不作形态缩放。稀疏的是策略参考接口，前端仍在估计完整骨架。</p>
+</li>
+<li><p>形成当前帧命令
+系统提取双腕、双踝相对于根部的位置与朝向。根部高度是离地高度，根部速度命令由根部变换的有限差分得到，线速度与角速度在根部坐标系表达。紧凑参考不含完整关节目标、其余身体部位状态或未来帧。</p>
+</li>
+<li><p>与机器人自身状态合并
+部署actor还读取根部坐标系下的实测角速度、投影重力、关节位置和速度，以及上一动作。额外提供给训练critic的真实根部线速度和各身体部位位姿不进入部署actor。</p>
+</li>
+<li><p>把策略输出变成力矩
+策略为29自由度G1输出关节空间偏移。偏移经尺度系数缩放后加到名义站立关节位置，得到目标位置，PD控制器再根据关节位置误差和实测关节速度计算电机力矩。因此策略输出不是直接力矩，也不是完整人体关节角的逐项复制。</p>
+</li>
+</ol>
+</section><section id="section-4"><span class="section-number">04</span><h2>65毫秒衡量的是外部动作延迟</h2><p>内部计时得到约20毫秒，覆盖通信、紧凑参考组装与策略推理，排除了感知延迟和机器人执行响应。它只能描述部分链路。论文另用外部视频测量操作者动作到机器人动作的延迟。</p>
+<p>外部测量让人与机器人处于同一画面，以200 fps录制出拳、下蹲和挥手。对两区域分别计算光流并提取运动信号，匹配同号的运动峰值。三类动作分别得到4、5、7对峰值，共16对，汇总中位数为65毫秒、均值为83毫秒。这里的样本是峰值对，不是16次完整任务。</p>
+<p>下表来自论文可用同一感知前端部署的系统，均采用外部光流协议。它支持这组实现中的延迟比较，不能据此把所有差值都归因于某一个模块。</p>
+<table>
+<thead>
+<tr>
+  <th>系统</th>
+  <th>未来帧缓冲</th>
+  <th>在线重定向</th>
+  <th>端到端延迟</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>SONIC</td>
+  <td>200毫秒</td>
+  <td>无</td>
+  <td>245毫秒</td>
+</tr>
+<tr>
+  <td>SONIC-LL</td>
+  <td>80毫秒</td>
+  <td>无</td>
+  <td>145毫秒</td>
+</tr>
+<tr>
+  <td>TWIST2</td>
+  <td>无</td>
+  <td>有</td>
+  <td>120毫秒</td>
+</tr>
+<tr>
+  <td>HuMiT</td>
+  <td>无</td>
+  <td>无</td>
+  <td>65毫秒</td>
+</tr>
+</tbody>
+</table>
+<figure><img src="https://arxiv.org/html/2610.29903v1/images/latency_strips.png" alt="作者原图：S5.F3" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.29903v1/images/latency_strips.png" alt="作者原图：S5.F3" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>按动作类型查看操作者与机器人的运动对齐，再读各峰值对的延迟。图中逐对计时帮助理解外部光流测量，不能替代完整任务的成功率。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.29903v1#S5.F3">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.29903v1/images/latency_strips.png">原图来源</a></p></figcaption></figure></section><section id="section-5"><span class="section-number">05</span><h2>紧凑参考在高动态动作上仍付出代价</h2><p>HuMiT-Full只把actor的紧凑参考换成完整参考，网络架构、奖励、随机化和训练流程保持一致。因此它比不同训练框架之间的横向排名更适合检验参考信息量的作用。</p>
+<p>仿真成功率指整段参考动作执行完毕且未触发提前终止。论文规定根部平移偏差超过0.4米、根部朝向偏差超过0.8或关键点偏差超过0.4米时终止。当前正文未明确该朝向阈值的单位，也未给出下表各数据集的评测轨迹数、重复种子或置信区间。</p>
+<table>
+<thead>
+<tr>
+  <th>评测动作集</th>
+  <th>HuMiT紧凑参考成功率</th>
+  <th>HuMiT-Full完整参考成功率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>AMASS</td>
+  <td>87.6%</td>
+  <td>87.5%</td>
+</tr>
+<tr>
+  <td>LAFAN1</td>
+  <td>52.5%</td>
+  <td>62.5%</td>
+</tr>
+<tr>
+  <td>BONES-SEED</td>
+  <td>96.2%</td>
+  <td>96.6%</td>
+</tr>
+</tbody>
+</table>
+<p>AMASS和BONES-SEED上的成功率接近，但高动态的LAFAN1上，紧凑参考为52.5%，完整参考为62.5%，相差10个百分点。因此“可用更少参考”不等于所有动作都无损。另一个边界是世界坐标系关键点误差，论文指出能用全局根部位置目标纠偏的ScaleBFM更有优势，不能把低延迟扩大为全面最优。</p>
+</section><section id="section-6"><span class="section-number">06</span><h2>真机已经做到了什么，尚缺什么证据</h2><ul>
+<li><p>已经展示
+论文在G1上由单一操作者对每项任务做10次试验，接球成功2次，搬水桶9次，推带轮椅子5次，坐椅子7次，挂外套6次。SONIC-LL和TWIST2接球均为0/10。接球结果提示低延迟方案具备反应能力，但小样本与单一操作者不足以证明稳定优势。</p>
+</li>
+<li><p>失败仍涉及任务本身
+论文将接球失败主要归于操作者与机器人手臂工作空间不匹配，推椅子时难以控制椅子朝向，挂衣时衣架朝向不可控。这些是作者记录的主要失败解释，不能视为已排除其它原因的因果实验。</p>
+</li>
+<li><p>尚不能推出
+训练动作以直立运动和上肢动作居多，跪姿、爬行等地面接触动作覆盖不足，会导致误差增大或失败。系统也没有在重负载条件下训练。论文只验证了该G1配置，不能据此声称换本体无需重新训练或适配。</p>
+</li>
+<li><p>还缺什么证据
+上述是真机任务级试验计数，与仿真中“跟踪整段参考”的成功判据不同。当前读取的真机部分没有逐项给出时间限制、容差和统一成功判定细则，跨系统可靠性还需要更完整的任务定义、多操作者和重复测试。</p>
+</li>
+</ul>
+</section><section id="section-7"><span class="section-number">07</span><h2>优先读非对称监督，再判断复现条件</h2><p>建议先读IV-B与IV-C，沿“完整参考准备—非对称PPO训练—紧凑接口部署”核对哪些信息只在训练时使用。再读V-A的内外两种计时、V-B的HuMiT-Full对照，以及V-C和结论中的真机边界。它的学习价值在于展示如何减少在线参考需求，同时保留足够的训练监督。</p>
+<p>本期阅读依据为冻结的arXiv v1正文及表格，未运行实验。首发日期未核实。论文给出项目入口，但本轮未读取项目站内容，未核实代码、权重、处理后训练数据及各自许可，也未核实论文许可。论文可读与整套系统可复现是不同条件。</p>
+<p>论文全文
+https://arxiv.org/html/2610.29903v1</p>
+<p>论文提供的项目入口
+https://xiaohu-art.github.io/Track/</p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.29903v1">https://arxiv.org/html/2610.29903v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><aside>仅基于本轮冻结来源中HuMiT的arXiv v1全文。检索列表覆盖有限，未穷尽当日论文。首发日期与发布资源许可待核实，未读取项目站或独立复现实验。</aside></article></body></html>
