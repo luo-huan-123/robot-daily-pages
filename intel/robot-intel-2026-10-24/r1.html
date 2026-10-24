@@ -1,0 +1,75 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>机器人情报｜2026-10-24</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>机器人情报｜2026-10-24</h1><p class=meta>2026-10-24T08:04:56.581253+08:00 · intel · 修订1</p></header><div class=lead><p>本期重点是机器人怎样根据任务进展和外部变化决定下一步。AGIBOT 的 10 月 22 日公告把决策依据、任务过程与真机动作连接到同一批数据。技术补充选取 DiffDreamer，解释世界模型怎样与可微物理共同训练飞行策略。</p>
+<p>DiffDreamer 的 arXiv 首次提交日期为 10 月 22 日，仅据日期纳入近七日补充，不声称属于滚动 48 小时内的新发布，也不把提交日期当作实验发生日期。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">AGIBOT WORLD 把任务状态纳入数据设计</a></li><li><a href="#section-2">从标注到决策与动作的训练接口</a></li><li><a href="#section-3">DiffDreamer 让环境预测与飞行控制共同优化</a></li><li><a href="#section-4">DiffDreamer 的模型、价值网络和动作策略分别怎样训练</a></li><li><a href="#section-5">实验支持更好的仿真穿门表现，真机仍依赖外部状态反馈</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>AGIBOT WORLD 把任务状态纳入数据设计</h2><p>AGIBOT 在正文署为 2026 年 10 月 22 日的公司公告中宣布，开放 AGIBOT WORLD 2026 第四批“物理推理”数据。本文依据公告描述其设计，未读取数据集文件或核验许可条款，不把“开源”公告等同于已验证可复现。</p>
+<h3>同一目标为什么需要不同动作</h3>
+<p>补满迷你吧时，机器人必须识别空瓶和满瓶，并统计已有数量，再决定取走哪些瓶、补入多少瓶。取出被盒子挡住的钥匙时，可直接伸手还是先移开盒子，取决于空间和遮挡。数据因此围绕物体数量、遮挡关系、空间占用和任务进度改变初始条件。</p>
+<h3>当前画面并不包含全部任务信息</h3>
+<p>跨抽屉寻找洗漱用品时，即便摄像头画面不变，已经检查过哪些抽屉仍会改变下一步决策。公告用这类例子强调，训练资料要记录目标、条件及执行历史，不能只记录动作如何完成。</p>
+<h3>难度来自判断的组合</h3>
+<p>数据按 Easy、Medium、Hard 分级，从单个属性判断，到数量与动作前提，再到多个子目标、长程状态跟踪和多重条件的组合。公告还称成功样本与错误样本同等看待，并标注选物、放置及数量是否符合要求，为研究执行偏差后的调整提供材料。这不等于已经证明某个策略具有纠错能力。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>从标注到决策与动作的训练接口</h2><h3>三层标注分别解决什么</h3>
+<ol>
+<li>高层指令描述完整目标，任务框架、子任务片段和动作步骤记录任务结构，让研究者能够研究任务拆分、阶段识别及下一个子目标预测。</li>
+<li>Dense Prompt 是详细动作描述，列出目标物体、操作区域、双臂分工、运动过程、夹爪状态和预期结果，并与真机动作对齐。</li>
+<li>边界框、点和轨迹线把语言对应到具体视觉位置与运动路径。“成功片段”和“对抗片段”等标注辅助判断任务是否完成、目标与干扰物是否区分正确。</li>
+</ol>
+<h3>如何用于训练和执行</h3>
+<p>公告同时提供高层问答和低层动作轨迹，支持高层决策模型与低层动作策略协同训练。它提出的执行闭环是智能体根据当前情境和执行历史选子目标，动作策略执行操作，随后更新任务状态，再据结果调整计划。这里描述的是数据支持的研究接口，公告没有给出具体模型损失、参数更新顺序或冻结模块。</p>
+<h3>为什么把结果也放进数据</h3>
+<p>仅有“夹取并放置”的动作片段，不能表达最终数量或物体选择是否满足目标。公告把任务目标、当前阶段、动作要求和执行结果放入同一标注流程，使决策研究与动作策略训练能够围绕相同的任务过程展开。它提供的是监督信息与评估素材，训练收益仍需对照实验验证。</p>
+<h3>发布了数据设计，尚未发布性能验证</h3>
+<p>公司称这批数据已支持其即将推出的智能体框架，并用于训练下一代基础模型。公告未披露数据规模、具体模型架构、训练配方或训练后任务成功率，也没有持续运行与人工接管统计。因而目前值得关注的是任务记忆与动作结果的标注方式，不能从这些设计推导出家庭、酒店或商业场所的自主服务可靠性。</p>
+<p><a rel="noopener noreferrer" href="https://agibot.com/article/231/detail/129.html">阅读 AGIBOT 公告</a></p>
+</section><section id="section-3"><span class="section-number">03</span><h2>DiffDreamer 让环境预测与飞行控制共同优化</h2><p>这项工作由 Fanxing Li 等署名。本轮读取了论文全文，但正文未提供可核实的机构声明，因此不补写机构。arXiv 辅助日期证据标注首次提交于 2026 年 10 月 22 日，它不是实验日期，也不能据此确认当前版本的发布时间。</p>
+<h3>要解决的矛盾</h3>
+<p>四旋翼穿过运动中的门，既要预测门接下来在哪里，又要精确控制自身高速运动。若全部依赖学习到的世界模型，自身刚体动力学误差也会进入预测过程。若只沿可微物理模型优化，又难以处理部分可观测的外部运动和穿门这样的离散任务事件。</p>
+<h3>两类状态在同一个动作下向前推进</h3>
+<p>世界模型的隐状态记录外部运动历史和时变特征，可微仿真器则推进飞机的位置、速度、姿态与角速度。策略同时读取这两类状态，每一步产生的同一个动作送入两条预测路径，使两边保持时间同步。这样做的目的，是减少世界模型学习高频自身动力学的负担，同时保留对外部变化的预测。</p>
+<h3>穿门时真正输入和输出什么</h3>
+<p>观测包含最近两扇门相对飞机的位置，以及飞机自身的速度、姿态和角速度。RSSM 循环状态空间模型将观测历史编码为隐状态，策略再结合显式物理状态，输出总推力与机体角速度指令。真机上这些指令送往飞控，策略并不是直接输出未来航路点。</p>
+<figure><img src="https://arxiv.org/html/2610.31617v1/figures/overview.png" alt="作者原图：S1.F1" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.31617v1/figures/overview.png" alt="作者原图：S1.F1" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>先区分预测外部运动的世界模型与推进飞机物理状态的可微仿真，再看策略如何同时利用隐状态和显式状态生成控制指令。图注还强调真机迁移前要做系统辨识与校准。此图说明方法结构，不提供性能统计。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31617v1#S1.F1">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31617v1/figures/overview.png">原图来源</a></p></figcaption></figure></section><section id="section-4"><span class="section-number">04</span><h2>DiffDreamer 的模型、价值网络和动作策略分别怎样训练</h2><h3>世界模型学习交互中的变化</h3>
+<p>论文将交互经验存入回放缓冲区，持续训练世界模型。它采用 RSSM，文中对这一模型的说明包括由观测形成隐表示，再根据先前状态和执行动作推进预测，并用隐状态重建观测、预测奖励与回合继续标记。世界模型的学习与动作策略的优化是不同环节。</p>
+<h3>策略更新使用两种反馈</h3>
+<ol>
+<li>对成功穿门这类不可微任务事件，价值网络只估计对应的离散奖励回报，并用包含自举价值的回报目标训练。</li>
+<li>对接近门、远离门以及不稳定运动等连续奖励，通过可微仿真中的物理轨迹反向传播，把运动误差转换成策略更新信号。</li>
+<li>更新动作策略时，世界模型和价值网络的参数保持固定。隐状态作为策略输入时停止梯度，显式物理状态仍保持可微，两条前向预测继续由同一动作序列同步。</li>
+</ol>
+<h3>为什么不能只保留平滑运动奖励</h3>
+<p>靠近门不等于成功穿门，离散成功奖励保留任务目标，连续运动奖励则提供沿物理轨迹优化的信号。在门最大速度为 2.0 m/s 的仿真设置中，完整目标在 512 步内平均通过门次数为 8，移除离散穿门奖励为 0，移除可微运动奖励为 2。该消融支持在这项任务中同时保留两种反馈，不能外推为所有机器人任务都适用。</p>
+</section><section id="section-5"><span class="section-number">05</span><h2>实验支持更好的仿真穿门表现，真机仍依赖外部状态反馈</h2><h3>对照在什么条件下进行</h3>
+<p>训练比较包括 DiffDreamer、DreamerV3、PPO 和 BPTT，使用相同观测与奖励，对目标轨迹、速度和初始状态进行统一随机化，物理参数使用固定的辨识结果。训练奖励曲线按五个独立随机种子报告均值与标准差，各基线分别调参。这里的训练种子数量与下述评测环境数量是不同口径。</p>
+<h3>测的是固定步数内的通过次数</h3>
+<p>动态穿门评测包含五个随机环境，每个环境有四扇依序通过的运动门。在最大门平移速度 2.0 m/s 时，512 个仿真步内平均通过门次数，DiffDreamer 为 8，MPC 为 1。指标统计的是通过门的次数，不是不同门的数量，也不是整项任务成功率。论文的 MPC 对照采用 Song 与 Scaramuzza 的方法，不能把这一差异扩展到所有 MPC 实现。</p>
+<h3>真机证明了什么</h3>
+<p>作者在配有 Jetson Orin NX 与 Betaflight 飞控的自制四旋翼上，以超过 100 Hz 的机载策略运行频率发送总推力和机体角速度指令。飞机及运动目标、门的状态来自外部动捕。部署前还需辨识飞机物理参数并纳入可微仿真，室内实验使用有界推力。所展示的成功轨迹属于这些条件下的概念验证。</p>
+<h3>还缺哪些证据</h3>
+<p>论文尚未验证完全机载感知或对感知噪声的鲁棒性，不能把真机演示理解为摆脱动捕的自主穿门。方法也只在四旋翼上评估过，换成其他机器人需要适用的可微模型和任务工程，接触与动力学不连续会增加求导难度。后续最有价值的证据，是脱离动捕后的连续运行表现，以及不同感知误差下的任务完成统计。</p>
+<p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31617v1">阅读 DiffDreamer 全文</a></p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://agibot.com/article/231/detail/129.html">https://agibot.com/article/231/detail/129.html</a> · page · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31617v1">https://arxiv.org/html/2610.31617v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://arxiv.org/abs/2610.31617v1">https://arxiv.org/abs/2610.31617v1</a> · page · 2026-10-22</p><aside>仅采用本轮 AGIBOT 官方公告、DiffDreamer 全文及对应 arXiv 首次提交日期证据。采集覆盖有限，部分来源读取失败，仓库 README 与许可等未成功读到，不能据此判断没有新进展。本稿未运行模型或实验，未独立复现公司披露与论文结果。 部分来源读取失败，本期仅采用已核实资料。</aside></article></body></html>
