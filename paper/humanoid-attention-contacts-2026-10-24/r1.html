@@ -1,0 +1,121 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>机器人论文日报｜2026-10-24｜用接触计划连接地形感知与全身控制</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>机器人论文日报｜2026-10-24｜用接触计划连接地形感知与全身控制</h1><p class="author-units">已核实作者单位<br>ETH Zurich<br>其余作者单位待核实</p><p class=meta>2026-10-24T09:33:59+08:00 · paper · 修订1</p></header><div class=lead><p>爬同一面障碍，目标不同，机器人可能需要踏上去、用手支撑爬上去，或坐下来。这篇工作把接触作为地形感知与全身控制之间的接口，用示范教会协调，再用强化学习适应没有配套动作参考的地形。最值得理解的是两个模型怎样通过成功执行的接触标签共同改进。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">为什么支撑点比整段参考动作更适合作为接口</a></li><li><a href="#section-2">先学执行接触，再学从地图提出接触</a></li><li><a href="#section-3">成功执行怎样反过来教规划器</a></li><li><a href="#section-4">从机载感知到关节控制的完整链</a></li><li><a href="#section-5">细地形感知和控制鲁棒性分别怎样训练</a></li><li><a href="#section-6">组合路线结果支持接触接口的价值，但限于该评测</a></li><li><a href="#section-7">真机展示及接触表示还覆盖不到的动作</a></li><li><a href="#section-8">推荐精读回溯标注与地图表面选点</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>为什么支撑点比整段参考动作更适合作为接口</h2><ul>
+<li><p>爬梯、爬箱或穿过狭窄空间，不只是规划脚步。机器人还要决定是否借助手、膝盖或肘部支撑，并协调其余关节。仅靠任务奖励搜索这些组合很困难，而完整参考动作又要求环境与轨迹相匹配。</p>
+</li>
+<li><p>一个手掌支撑点并不唯一决定全身姿态。本文保留接触的位置、部位与未来接触信息，让控制器自行实现中间动作。它减少的是部署对完整参考运动学的依赖，训练中仍利用参考动作提供协调先验。</p>
+</li>
+<li><p>本期阅读范围为所采集 arXiv HTML 正文与补充方法。清单日期为 2026 年 10 月 23 日，来源未给出可核实的首次发布日期，因此不把清单日期当成发表日期。</p>
+</li>
+</ul>
+</section><section id="section-2"><span class="section-number">02</span><h2>先学执行接触，再学从地图提出接触</h2><ol>
+<li><p>准备带接触的机器人参考。人类动作先统一表示、缩放与时间归一化，再逐帧求逆运动学，约束关节范围、地面与障碍穿透，并用时间正则平滑动作。同时记录双手、双肘、双膝、双脚及骨盆的接触状态和世界坐标。已有 G1 参考只补接触标签，表 S1 中稀疏地形数据来自已有 AME 策略，不能把全部数据都称为新采集的人体动捕。</p>
+</li>
+<li><p>第一阶段只训练跟踪器。它先接收参考接触指令，在与动作对齐的地形中用 PPO 学习执行。训练奖励还包含参考身体与关节运动跟踪，策略本身不需要把完整参考运动学作为输入。初始化从动作末段逐步向前扩展，让它先学会收尾，再学完整过程。</p>
+</li>
+<li><p>第二阶段引入规划器并继续训练跟踪器。规划器用成功执行轨迹的回溯标签做监督学习。每个有效接触在三维地图点上形成高斯软标签，以交叉熵训练选点分布，另用二元交叉熵训练各部位是否即将接触。三维软标签有助于处理梯级等薄支撑，单凭水平位置选最近格点可能错过真正结构。</p>
+</li>
+<li><p>分开切换输入和奖励。第二阶段先提高跟踪器接收预测接触的概率，每个环境、每步选择完整的参考或预测指令，并不插值坐标。随后才逐渐降低参考接触奖励、增加预测接触奖励，其余参考运动奖励保留。这使跟踪器适应规划器的指令，而非突然撤掉所有示范约束。</p>
+</li>
+</ol>
+<figure><img src="https://arxiv.org/html/2610.31608v1/pipeline_final.png" alt="作者原图：Sx1.F2" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.31608v1/pipeline_final.png" alt="作者原图：Sx1.F2" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>先区分部署推理与两个训练阶段。接触作为中间指令，第一阶段学习执行参考接触，第二阶段让规划器根据状态、地图和目标提出接触，并继续训练跟踪器。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31608v1#Sx1.F2">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31608v1/pipeline_final.png">原图来源</a></p></figcaption></figure></section><section id="section-3"><span class="section-number">03</span><h2>成功执行怎样反过来教规划器</h2><ol>
+<li><p>第三阶段增加无参考动作的到目标任务。平台方向、踏石、间隙、梯级间距等发生程序化变化。规划器根据地图、机器人状态和目标提出接触，跟踪器由到达目标奖励与接触跟踪奖励更新。到目标训练每回合上限为 15 秒，失败可提前终止。规划器仍由成功执行后的接触标签监督更新，不能把它写成与跟踪器共用同一 PPO 目标。</p>
+</li>
+<li><p>回溯标签取实际接触。每段轨迹向后搜索各部位下一次接触起点，过滤不足十个控制步的短暂接触，保留未来 1.5 秒内且位于局部扫描范围的目标，并变换到当时的身体朝向坐标系。规划器因此学习跟踪器真正做到的接触，而不是直接照抄动捕里的点。</p>
+</li>
+<li><p>成功筛选有具体门槛。参考跟随轨迹需从参考前 10% 内开始并推进至至少 90%。到目标轨迹需曾达到水平误差小于 0.5 米且垂直误差小于 0.1 米，才可进入监督缓冲。缓冲录入条件不同于后文组合路线评测，不可互换。</p>
+</li>
+<li><p>保留旧技能并区分价值估计。第三阶段仍按比例抽取原参考训练，两类环境使用独立价值网络并分别归一化优势。跟踪器 actor 只看真机可获得的量，参考环境 critic 可看完整参考运动及接触信息，到目标 critic 则增加目标距离、高度差和回合时间等信息。这些训练额外信息不进入部署策略。</p>
+</li>
+</ol>
+<figure><img src="https://arxiv.org/html/2610.31608v1/stage3.png" alt="作者原图：Sx1.F3" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.31608v1/stage3.png" alt="作者原图：Sx1.F3" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>关注成功执行如何回到监督缓冲。无参考地形上，跟踪器用任务和接触奖励更新，成功轨迹再教规划器。原参考训练仍被保留，用于维持已有技能。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31608v1#Sx1.F3">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31608v1/stage3.png">原图来源</a></p></figcaption></figure></section><section id="section-4"><span class="section-number">04</span><h2>从机载感知到关节控制的完整链</h2><ol>
+<li><p>LiDAR 生成可查询地形。G1 的机载 LiDAR 经 DLIO 估计根部状态并校正点云运动畸变，再交给神经建图模块。规划器读取身体朝向坐标系中的 17×11 个地形点，跟踪器另外读取较小的 9×7 局部高度图。两者都不是直接消费原始 RGB 图像。</p>
+</li>
+<li><p>规划器结合身体状态与目标选点。五步状态历史包括基座角速度、重力投影、关节位置、关节速度与上一动作。目标由有界水平指向和相对朝向组成，临近目标时水平向量缩小。地形编码、状态历史和目标形成共享特征，再由各部位的嵌入生成各自的注意力查询，从地图表面选择接触。</p>
+</li>
+<li><p>输出九个部位的未来接触。规划器预测未来 1.5 秒内每个部位下一次接触的位置和是否接触的概率，位置以机器人基座为中心、随身体偏航旋转并与重力对齐。定量评测采用 top-1 地图点，因此有效目标落在观测表面上。接触概率超过 0.5 才保留目标，否则置零。这个接口不是一整条带精确时刻的全身轨迹。</p>
+</li>
+<li><p>跟踪器把计划变成动作。接触目标、五步自身状态历史、局部高度图和目标指令一起进入跟踪器。它以 50 Hz 输出 23 个关节位置偏移，乘以 0.25 并加默认关节姿态，交给 200 Hz 的关节 PD 控制。感知、状态估计、建图与策略推理均在机载 Jetson Orin 运行，部署不需要参考动作检索。</p>
+</li>
+</ol>
+</section><section id="section-5"><span class="section-number">05</span><h2>细地形感知和控制鲁棒性分别怎样训练</h2><ul>
+<li><p>建图网络有独立监督任务。每个网格选择保留实测高度、采用邻域平均或留空，再结合不确定性和里程计融合。训练使用场景网格生成的合成点云，加入悬空横杆、梯子、点位置噪声与光束发散噪声，用真实几何和带噪网格生成分类标签，以交叉熵学习。这里训练的是地图处理网络，不是动作策略。</p>
+</li>
+<li><p>梯级保留还依赖融合先验。如果近处扫描只看到横杆下方地面，直接覆盖旧高度会擦掉梯级。论文根据既有地图置信度、新旧高度差与观测仰角决定是否丢弃低点。高质量地图并非单靠注意力自动获得。</p>
+</li>
+<li><p>控制训练另做域随机化。三个阶段都随机化摩擦、质量、关节参数等物理量，并对 actor 可见观测加噪声。高度扫描还模拟逐步噪声及回合尺度高度偏移，以覆盖建图误差和漂移。表 S2 另列动作与里程计延迟及漂移设置。它与建图网络的合成数据训练是两件不同的事。</p>
+</li>
+</ul>
+</section><section id="section-6"><span class="section-number">06</span><h2>组合路线结果支持接触接口的价值，但限于该评测</h2><p>论文与 MGMT 比较。后者用扩散模型生成完整参考运动，再由跟踪器执行。八条精心构造的组合路线把稀疏落脚点和全身障碍连接起来，每方法每路线评测 1000 回合。该方法在八条路线均更高，路线平均成功率为 92.5%，MGMT 为 58.8%。这支持其在所测组合中的通过能力，不能视作所有环境中的通用排名。</p>
+<table>
+<thead>
+<tr>
+  <th>比较对象</th>
+  <th>八条组合路线平均成功率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>本文第三阶段系统</td>
+  <td>92.5%</td>
+</tr>
+<tr>
+  <td>MGMT</td>
+  <td>58.8%</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>完整路线有额外判据。除到达目标水平位置外，还须到达目标高度，并沿规定路线通过，不能进入坑区或离开通行带。图 S1 给出的水平目标容差为 0.5 米。这组八条路线与随机生成的未见地形组合基准单独评测。</p>
+</li>
+<li><p>比较环境刻意关闭传感器噪声、物理随机化和动作延迟，用于隔离地形因素。因此这些数字不是带完整感知误差的真机成功率。类别级统计每方法每类别汇总三个评测种子的 3000 回合，置信区间反映评测不确定性，不是多个独立训练种子的方差。</p>
+</li>
+<li><p>接触输入的消融。在参考锚定地形中，仅给参考接触的第一阶段跟踪器各类别成功率至少为 98.5%，额外给完整参考运动学输入没有一致收益，但两者训练仍保留参考运动指导。这个结论限于所测参考技能，不能推成所有动作都只需接触。</p>
+</li>
+<li><p>规划器架构的消融。注意力在稀疏全身支撑和干扰物场景优势较明显。冻结规划器再配各自适配过的跟踪器的比较，同时反映规划泛化与两模块兼容性，不能只归因于规划器。</p>
+</li>
+</ul>
+<figure><img src="https://arxiv.org/html/2610.31608v1/overall_results_mgmt_highlights_graphic.png" alt="作者原图：Sx2.F7" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.31608v1/overall_results_mgmt_highlights_graphic.png" alt="作者原图：Sx2.F7" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>先看 E 中与 MGMT 的路线比较，再看 A 至 D 如何拆分接触输入、注意力架构和微调的作用。误差条描述评测不确定性，不能当作跨训练种子的稳定性证据。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31608v1#Sx2.F7">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31608v1/overall_results_mgmt_highlights_graphic.png">原图来源</a></p></figcaption></figure></section><section id="section-7"><span class="section-number">07</span><h2>真机展示及接触表示还覆盖不到的动作</h2><ul>
+<li><p>已经展示。单一 G1 通用策略完成爬梯、爬箱、跨石及多动作连续衔接，并展示跌倒后起身、爬梯受阻后重试等恢复。正文真机部分给出这些行为展示，没有与八条仿真路线同口径的重复成功率统计。</p>
+</li>
+<li><p>尚不能推出。系统解决局部目标条件下的运动控制，部分非结构化场景由人工给中间路点，全局导航不在本文范围。本轮证据的部署对象是 G1，也没有证明同一个策略可以零样本跨机器人使用。</p>
+</li>
+<li><p>表示本身有边界。地图与接触主要针对 2.5D 地形交互，更一般的头顶接触、悬挂与操作需要更丰富的三维表示。后空翻与垂直跳可能有近似相同接触序列，当前接口不能仅凭这些接触区分两种动作意图。</p>
+</li>
+</ul>
+</section><section id="section-8"><span class="section-number">08</span><h2>推荐精读回溯标注与地图表面选点</h2><ul>
+<li><p>阅读顺序建议从 Figure 2 的训练与推理接口开始，再读 Hindsight Contact Labeling 和三阶段训练，最后对照 Figure 7 的消融。核心问题是监督标签是否来自可实现的接触，以及从地形表面选点如何避免把支撑目标放到空处。</p>
+</li>
+<li><p>复现条件仍需核实。来源给出了数据来源、网络、奖励与训练设置，但本轮未读取独立代码仓库或资源包。论文文本的使用许可未核实，代码许可、权重下载与完整训练数据可用性也分别未知，不能由 arXiv 可读推出这些资源已经开源。未独立运行实验。</p>
+</li>
+<li><p>署名核查说明。首页五位作者的单位按直接相邻的原文归属段保留。其余作者缺少清楚的逐人归属，现任单位注释又有重复与错排，均不据此补造机构关系。机构列表表示署名归属，不表示机构为结果背书。</p>
+</li>
+</ul>
+<p>论文全文
+https://arxiv.org/html/2610.31608v1</p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31608v1">https://arxiv.org/html/2610.31608v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><aside>本期候选覆盖有限，清单首屏观察到25条，采集到24篇全文，1条未读，不代表全领域更新。本稿采用其中一篇的冻结正文及补充方法。清单日期不等于首次发表日期。未联网补采，未运行实验。</aside></article></body></html>
