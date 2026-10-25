@@ -1,0 +1,114 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>机器人论文日报｜2026-10-25｜VecTile让剪切触觉帮助接触纠偏</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>机器人论文日报｜2026-10-25｜VecTile让剪切触觉帮助接触纠偏</h1><p class="author-units">已核实作者单位<br>Imperial College London</p><p class=meta>2026-10-25T09:33:04.329381+08:00 · paper · 修订1</p></header><div class=lead><p>插头碰到插座后，关键往往是判断该朝哪边微调。VecTile用硅胶凸点把切向受力转成四个压阻象限的读数差，再把三轴触觉交给视觉条件动作策略。本文重点读这条从机械结构、测力标定到接触纠偏的链条，并分清阈值反射与学习控制各自证明了什么。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">相机看不到的接触，为什么需要剪切信息</a></li><li><a href="#section-2">用凸点把切向力变成可测的压力差</a></li><li><a href="#section-3">测力解码器与动作策略学习的是两件事</a></li><li><a href="#section-4">部署时怎样从观测走到机器人动作</a></li><li><a href="#section-5">在训练区域内，三轴触觉提高了完整插入成功数</a></li><li><a href="#section-6">精度、速度和可弯曲性各有测量口径</a></li><li><a href="#section-7">优先复查机械编码与纠偏示范，资源仍需核实</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>相机看不到的接触，为什么需要剪切信息</h2><p>本期选读VecTile三轴力柔性触觉阵列论文的全文，重点核对传感器设计、标定与两项真机实验。来源元数据给出的2026年10月23日是arXiv列表日期，首次发布日期仍未知。本文的学习价值在于说明触觉测量如何变成可用于控制的状态。</p>
+<ul>
+<li><p>插头已被夹住，但接触处容易被遮挡。仅知道法向压力增大，仍不足以区分切向受力方向。作者记录的插入过程里，三轴触觉补充了相机遮挡处的接触变化。</p>
+</li>
+<li><p>VecTile是一块4×4柔性触觉阵列，每个触点测三轴力。这里研究的是机械臂夹爪上的接触感知与操作，不能据此推出全身移动操作或跨本体控制已经得到验证。</p>
+</li>
+</ul>
+</section><section id="section-2"><span class="section-number">02</span><h2>用凸点把切向力变成可测的压力差</h2><ol>
+<li><p><strong>先把外力分配到四个象限。</strong> 每个硅胶凸点下方布置四个压阻象限。法向力使四路响应一起升高，切向力让凸点倾斜，将载荷从一侧转移到另一侧。总响应与相对象限的差异因而携带不同的力信息。</p>
+</li>
+<li><p><strong>再将形变读成电信号。</strong> 银纤维压阻层受压后电阻降低，电路逐个读取象限。每个象限的两电极都在同一柔性电路板上，减少装配时对两层电极精确对齐的要求。</p>
+</li>
+<li><p><strong>用机械分析指导尺寸，再以实物验证。</strong> 有限元模型在假设面内对称的条件下只分析正向x剪切，预测较高凸点会增大剪切响应。实物高度扫描随后检查这一趋势，不能把单方向机械仿真本身当成完整三轴精度验证。</p>
+</li>
+</ol>
+<figure><img src="https://arxiv.org/html/2610.31472v1/Figure/ICRA_VecTile-03v4-compress.jpg" alt="作者原图：S1.F2" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.31472v1/Figure/ICRA_VecTile-03v4-compress.jpg" alt="作者原图：S1.F2" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>先看四个象限如何读取压力，再看硅胶凸点把剪切转成两侧读数差。图说明机械编码与电路结构，实际力值仍需标定解码。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31472v1#S1.F2">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31472v1/Figure/ICRA_VecTile-03v4-compress.jpg">原图来源</a></p></figcaption></figure></section><section id="section-3"><span class="section-number">03</span><h2>测力解码器与动作策略学习的是两件事</h2><ol>
+<li><p><strong>标定解码器学电信号到力的映射。</strong> 以ATI Mini40力传感器提供参考值，每个触点分别拟合一个包含常数项、一次项及二次交叉项的解码器。输入是四个去基线象限读数，输出是三个力分量，系数通过普通最小二乘拟合。这一步不学习机器人动作。</p>
+</li>
+<li><p><strong>机器人实验使用快速手工标定。</strong> 选定3.0 mm凸点后，操作者对每个触点做10次先按压、再绕圈的加载，获得约1400个标定数据点。另收240个测试点，单触点法向和剪切RMSE分别为0.43 N、0.22 N。两项控制实验都采用这一标定流程。</p>
+</li>
+<li><p><strong>动作策略从操作示范学习。</strong> 作者在约100×30 mm区域内的六个插座位置采集84条遥操作轨迹，每个位置各有7条直接插入和7条失败后调整的轨迹。纠偏因此已有示范监督，不是策略上线后才凭空学会。</p>
+</li>
+<li><p><strong>分别处理图像与触觉，再训练策略。</strong> 两路RGB图像各由一个ResNet-18编码成512维特征。两指共96个三轴触觉通道用训练数据拟合PCA，投影为16个主成分。视觉特征、触觉主成分、末端位姿和夹爪宽度一起条件化Diffusion Policy，每种观测设置训练60轮。正文没有给出完整损失实现、动作块长度或各编码器是否冻结，不能代为补齐。</p>
+</li>
+</ol>
+</section><section id="section-4"><span class="section-number">04</span><h2>部署时怎样从观测走到机器人动作</h2><ul>
+<li><p><strong>输入。</strong> 腕部相机与固定场景相机提供RGB图像，两指传感器提供经标定的三轴触觉信息。策略还需要末端位姿和夹爪宽度，不能将它概括成只看图像和触觉。</p>
+</li>
+<li><p><strong>输出。</strong> 策略预测由笛卡尔位姿和夹爪指令组成的动作块，按10 Hz执行于UR5e与Robotiq 2F-85夹爪。论文在这一层交代了动作接口，未展开底层伺服的实现。</p>
+</li>
+<li><p><strong>理解示例。</strong> 作者展示的一条成功轨迹先在插入失败后小幅找孔，再对齐、下降、停止并松开。相应剪切模式与地线脚先接触、偏侧接触和插到底后的阻力相一致。这是对录制轨迹的解释，不是单凭可视化就能证明策略内部推理过程。</p>
+</li>
+</ul>
+</section><section id="section-5"><span class="section-number">05</span><h2>在训练区域内，三轴触觉提高了完整插入成功数</h2><p>三种观测设置各执行25次真机测试。插座位置训练时未见，但落在示范覆盖区域内。成功必须在60秒内使插头就位并点亮指示灯，局部对准或某一插脚进入都不够。</p>
+<table>
+<thead>
+<tr>
+  <th>策略观测</th>
+  <th>完整成功</th>
+  <th>直接插入</th>
+  <th>首次未直接插入后的成功纠偏</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>仅视觉</td>
+  <td>12/25</td>
+  <td>5次</td>
+  <td>7/20</td>
+</tr>
+<tr>
+  <td>视觉加法向触觉</td>
+  <td>16/25</td>
+  <td>2次</td>
+  <td>14/23</td>
+</tr>
+<tr>
+  <td>视觉加三轴触觉</td>
+  <td>22/25</td>
+  <td>4次</td>
+  <td>18/21</td>
+</tr>
+</tbody>
+</table>
+<p>三轴组完整成功数最高，但直接插入数没有高于仅视觉组，收益主要出现在接触后的调整。表中纠偏分母是未直接插入的次数，各组不同，不能将18/21误写成全部测试的成功率。原文未提供多训练随机种子的重复统计，这组有限试验也没有验证新插头、训练区域外位置或其他机器人。</p>
+<p>另一个实验单独测试阈值反射。机器人以5 mm/s让手术刀接近气球，任一触点的剪切力幅值变化超过0.1 N就触发回撤，20次重复均在刺破前回撤。同样运动与阈值的法向力条件未能在刺破前触发。这个结论限于该装置和条件，不是通用安全保证，也不是已与插入策略联合运行的快慢控制架构。</p>
+<figure><img src="https://arxiv.org/html/2610.31472v1/Figure/ICRA_VecTile-18.jpg" alt="作者原图：S4.F8" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.31472v1/Figure/ICRA_VecTile-18.jpg" alt="作者原图：S4.F8" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>A展示气球实验的剪切触发回撤，B展示插头任务装置与视觉触觉读数。这是两个独立实验，图本身不表示反射与学习策略已组成联合控制系统。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31472v1#S4.F8">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31472v1/Figure/ICRA_VecTile-18.jpg">原图来源</a></p></figcaption></figure></section><section id="section-6"><span class="section-number">06</span><h2>精度、速度和可弯曲性各有测量口径</h2><ul>
+<li><p><strong>受控标定精度。</strong> 在法向1–5 N、剪切幅值0–1.5 N范围内，3.0 mm凸点的法向和剪切RMSE为0.39 N、0.16 N。这是受控加载数据下的结果，按四折方向轮换划分留出接触方向，表中数字汇总16个触点的RMSE，不是快速手工标定的误差。</p>
+</li>
+<li><p><strong>弯曲后的误差。</strong> 将平面上拟合的3.0 mm传感器解码器直接用于半径85 mm的凸面和凹面安装，法向与剪切RMSE相对平面平均增加0.05 N、0.06 N。这支持所测曲率下的标定沿用，不能扩大为任意弯曲都无需重标定。</p>
+</li>
+<li><p><strong>不要混淆三个速度数字。</strong> 原始64象限帧约343 Hz传输，手工标定实验通过互相关测得相对参考力传感器的中位滞后为25 ms，包含传感、USB采集和二次解码。插入策略指令另按10 Hz执行，25 ms不是完整机器人纠偏或回撤的反应时间。</p>
+</li>
+<li><p><strong>尚未验证的长期因素。</strong> 每触点约5 N以上压阻响应灵敏度降低，这不是硬力限，但会影响分辨更大的力。迟滞、漂移与长期耐久性尚未表征，实验中未见可见损伤不能代替寿命测试。</p>
+</li>
+</ul>
+</section><section id="section-7"><span class="section-number">07</span><h2>优先复查机械编码与纠偏示范，资源仍需核实</h2><ul>
+<li><p>建议先读III-B的凸点机制，再读IV-C与IV-D的两种标定评测，最后对照V-B的示范组成与表III。这样能分清机械结构带来的测量信息、解码精度与策略收益，避免把三者合成一个没有条件的性能数字。</p>
+</li>
+<li><p>作者写明设计与代码将在论文录用后发布，并给出项目入口。本轮仅核对论文全文，没有读取项目仓库，不能确认代码当前已公开。论文许可、代码许可证、训练权重和完整数据包的可用性均未核实，本期未运行实验。</p>
+</li>
+</ul>
+<p>论文全文
+https://arxiv.org/html/2610.31472v1</p>
+<p>项目入口
+https://jiannnh.github.io/VecTile/</p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31472v1">https://arxiv.org/html/2610.31472v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><aside>仅采用本轮冻结来源中的VecTile全文，阅读传感器设计、有限元分析、标定与两项真机任务。候选清单覆盖有限，25篇候选中读取24篇，余1篇未读，不代表全领域覆盖。来源列表日期为2026-10-23，首次发布日期未知。项目页面与仓库未读取，未独立复现实验。</aside></article></body></html>
