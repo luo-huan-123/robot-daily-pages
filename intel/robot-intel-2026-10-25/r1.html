@@ -1,0 +1,72 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>机器人情报｜2026-10-25｜转身之后，怎样记住消失的线索</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>机器人情报｜2026-10-25｜转身之后，怎样记住消失的线索</h1><p class=meta>2026-10-25T08:05:23.969272+08:00 · intel · 修订1</p></header><div class=lead><p>移动操作需要记住过去发生过什么。WholeBodyMem 用物体事件选择少量历史画面，再让动作专家读取这些记忆，尝试解决机器人转身后丢失任务线索的问题。</p>
+<p>本文采用论文全文及其 arXiv 首次提交日期证据。该日期为 2026 年 10 月 22 日，仅支持按近七天技术补充收录，不证明具体版本发布时间、实验发生时间或滚动 48 小时内更新。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">问题在于线索消失后，机器人仍要做对选择</a></li><li><a href="#section-2">用物体变化选画面，保留短暂线索</a></li><li><a href="#section-3">记忆怎样变成当前动作</a></li><li><a href="#section-4">示范负责教动作，也教记忆该指向哪里</a></li><li><a href="#section-5">仿真消融说明，选对时刻确实有用</a></li><li><a href="#section-6">真机验证了六项任务，仍是小规模逐任务实验</a></li><li><a href="#section-7">值得继续跟踪的证据</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>问题在于线索消失后，机器人仍要做对选择</h2><p>MBZUAI 团队提出 WholeBodyMem，并构建 HuMeGo 记忆评测。任务不只要求拿起和放下物体，还要求依据之前看到的事件选择正确目标。</p>
+<p>例如，饮料曾先后停在不同座位上，机器人转身去取饮料，再回来时座位看起来已经相同。正确动作依赖先前的停留顺序，而不是当前画面。</p>
+<p>评测将过程分成线索、保持和决策三个阶段。到决策时，线索必须已经消失或离开视野，指令和此前的机器人动作也不能泄露答案。作者因而将记忆决策准确率与完整任务成功率分开统计。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>用物体变化选画面，保留短暂线索</h2><ol>
+<li><p>先确定要跟踪的物体。每项任务预先固定一到两个短语提示，冻结的 SAM3 据此输出物体掩码、边界框和置信度。系统利用相邻画面的背景特征估计相机运动，再测量物体相对场景的变化，避免把机器人转头当成物体移动。</p>
+</li>
+<li><p>再找值得记住的事件。物体出现、消失、重新出现、明显移动或形状变化，都可能触发候选帧。消失事件保留最后可见画面，低置信度检测被排除，候选按事件类型和置信度排序。</p>
+</li>
+<li><p>最后在有限预算里选帧。首帧、中间帧和当前帧先保留，其余最多四个位置交给事件帧，并跳过同一物体时间上过近的重复记录。选择只使用当前及以前的信息，通常形成三到七帧记忆，不用未来画面帮助决策。</p>
+</li>
+</ol>
+<h3>为什么保留画面局部细节</h3>
+<p>每帧保留视觉编码器原生网格 token，而不是先压成一个摘要。短暂线索可能只占很小的图像区域，过度汇总会丢掉决策细节。既然历史帧数量受限，保存哪个时刻就比堆积更长视频更关键。</p>
+</section><section id="section-3"><span class="section-number">03</span><h2>记忆怎样变成当前动作</h2><ol>
+<li><p>将历史画面变成可读取的记忆。所选画面的视觉 token 加入帧时间和网格位置编码，再投影到动作专家的表示空间。同一组记忆在一次策略调用中缓存并共享给各层。物体掩码还用于汇总局部特征，并加入质心、边界框、面积、可见性和时间信息。</p>
+</li>
+<li><p>由动作专家检索需要的过去。当前图像、语言指令和本体状态仍是策略输入。动作 token 通过交叉注意力读取历史画面及物体 token，再由 FiLM 对动作特征做缩放和平移，使生成动作时能使用过去的线索。SAM3 负责跟踪和选帧，不直接输出机器人动作。</p>
+</li>
+<li><p>把记住的答案接回眼前的目标。决策头从记忆中预测各候选放置区域的权重，并将权重送入各层的自适应归一化，影响动作特征。当前画面里可见区域的视觉特征、框几何和编号形成目标 token，再按这些权重供动作专家读取。只有最高选择权重及可见目标上的权重都达到门槛时，这条目标读取分支才启用。</p>
+</li>
+</ol>
+<h3>仿真与真机的动作接口不同</h3>
+<p>仿真策略生成上肢关节目标，以及躯干朝向、机身高度和速度等下肢命令，后者再由低层控制器变成关节目标。真机 G1 则使用 SONIC 的 64 维运动令牌与 14 维手部目标。策略一次预测 30 个动作，执行前 24 个后由下一段接续，SONIC 以 50 Hz 执行。理解结果时不能把两种动作空间混为一谈。</p>
+<figure><img src="https://arxiv.org/html/2610.31166v1/ral_pipeline.png" alt="作者原图：S2.F3" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.31166v1/ral_pipeline.png" alt="作者原图：S2.F3" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>这是 WholeBodyMem 的系统总览。结合本节按记忆构建、动作读取、目标选择的顺序理解接口。图注中的重复模块表示动作专家的六层 DiT，不能把这些模块都当成独立机器人策略。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31166v1#S2.F3">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31166v1/ral_pipeline.png">原图来源</a></p></figcaption></figure></section><section id="section-4"><span class="section-number">04</span><h2>示范负责教动作，也教记忆该指向哪里</h2><h3>仿真示范的来源</h3>
+<p>脚本设定场景、线索时序和技能顺序，在 MuJoCo 中由预计算抓取、机械臂规划和下肢平衡控制完成示范。保留物体抓持与线索可见条件合格的回合，再将记录状态送入 Isaac Sim，加入背景、材质和光照变化并渲染头部视角。每项记忆任务使用 100 条训练示范。</p>
+<h3>两个训练信号各做一件事</h3>
+<p>动作专家按任务从预训练策略微调，用流匹配目标学习示范动作序列。决策头从决策阶段开始，用示范中的正确答案做交叉熵监督，帮助记忆对应到目标区域。Qwen3-VL-2B 视觉语言骨干保持冻结，记忆编码器、记忆注意力和 FiLM 映射从头训练。</p>
+<h3>真机另行适配</h3>
+<p>每项真机任务采集 15 条全身遥操作示范，将头部图像、本体状态与 SONIC 运动令牌、手部目标配对。由于动作空间不同，各任务分别训练，动作专家的 Transformer 模块从后训练权重初始化，记忆模块从头训练，部署训练到 5000 步的检查点。这项实验没有证明无需新示范就能迁移到任意真机场景。</p>
+</section><section id="section-5"><span class="section-number">05</span><h2>仿真消融说明，选对时刻确实有用</h2><p>在六项记忆任务中，完整任务成功率从无记忆 Ψ0 的 29.1%、均匀记忆的 44.4%，提高到 WholeBodyMem 的 72.6%。各方法使用相同示范，均匀记忆对照保留等间隔画面，并且不包含物体 token 和决策头，因此完整方法的收益不能全归因于选帧。</p>
+<h3>更直接的选帧对照</h3>
+<p>在相同七帧、539 个记忆 token 预算下，同时去掉物体 token 和决策头，只按物体事件选择帧，成功率为 60.4%，高于均匀记忆的 44.4%。这支持关键帧选择的作用，但仍是该组任务内的消融结论。</p>
+<h3>这些成功率怎样测得</h3>
+<p>每项记忆任务在三个随机化级别各测试 30 回合，逐步增加视觉干扰、光照和空间扰动。测试种子与训练不同，但场景和专家轨迹仍处于训练范围，桌面材质也在训练中出现过。成功要求最终条件成立，例如物体实际落在正确区域。</p>
+<h3>选对答案并不等于做完任务</h3>
+<p>WholeBodyMem 的记忆决策准确率为 93.7%，高于其 72.6% 的完整任务成功率。前者有决策头时按所选答案评分，没有决策头的对照则按放置或触碰的位置评分。两种评分路径存在差别，不能把该指标直接当作跨方法一致的操作成功率。</p>
+</section><section id="section-6"><span class="section-number">06</span><h2>真机验证了六项任务，仍是小规模逐任务实验</h2><p>实验采用带 Dex3 手和头部 RealSense D435 相机的 Unitree G1，策略在 RTX 5090 上运行。六项任务覆盖物体、位置、先后顺序及任务进度记忆，其中部分任务要求机器人看完线索后转身取物，再返回执行。</p>
+<p>每种方法每项任务测试 10 次，答案做均衡安排。WholeBodyMem 共成功 53/60 次，为 88.3%，无记忆 Ψ0 为 22/60 次，即 36.7%。这组结果支持记忆模块在这些任务中的价值，仍须连同每任务 15 条真机示范及独立训练的条件理解。</p>
+<p>仿真中的均匀记忆对照没有进入这组真机比较。因此，真机表格能回答加入该整套记忆方案是否优于无记忆基线，不能单凭它区分选帧、物体 token 和目标监督各自带来了多少收益。</p>
+<figure><img src="https://arxiv.org/html/2610.31166v1/real_tasks.png" alt="作者原图：S4.F4" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.31166v1/real_tasks.png" alt="作者原图：S4.F4" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>各面板给出任务指令和遥操作示范的四个步骤，可用来理解机器人何时看到线索、随后怎样移动。蓝色箭头标记线索与答案，虚线表示线索消失前的位置。图中是示范过程，成功次数应以正文评测为准。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31166v1#S4.F4">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31166v1/real_tasks.png">原图来源</a></p></figcaption></figure></section><section id="section-7"><span class="section-number">07</span><h2>值得继续跟踪的证据</h2><p>作者指出，SAM3 从未检测到的物体会导致线索遗漏，在线跟踪增加推理开销，渲染与真实世界之间仍有差距，仿真示范也依赖脚本。下一步值得关注更复杂遮挡、相机运动和场景变化下的记忆可靠性，以及减少逐任务示范后是否还能保持收益。</p>
+<p>本期仅展开这一项具有可绑定全文和首次提交日期的技术进展。部分候选读取失败或尚未完成，日期不明的产品介绍及缺乏一手确认的商业线索没有进入主线。有限覆盖不能解释为行业没有其他更新。</p>
+<p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31166v1">阅读论文全文</a> · <a rel="noopener noreferrer" href="https://arxiv.org/abs/2610.31166v1">查看首次提交日期</a>
+本文按作者报告转述，未运行实验，也未独立核验代码、权重、数据许可或部署包的可用性。</p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.31166v1">https://arxiv.org/html/2610.31166v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://arxiv.org/abs/2610.31166v1">https://arxiv.org/abs/2610.31166v1</a> · page · 2026-10-22</p><aside>本期仅采用冻结来源中的 WholeBodyMem 论文全文及 arXiv 首次提交日期辅助证据，按近七天技术补充收录。候选材料覆盖有限，存在读取失败和未完成项，不据此判断行业无更新。未联网补采、未运行实验、未核验仓库许可或权重数据。 部分来源读取失败，本期仅采用已核实资料。</aside></article></body></html>
