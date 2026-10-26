@@ -1,0 +1,104 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>机器人情报｜2026-10-26</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>机器人情报｜2026-10-26</h1><p class=meta>2026-10-26T08:06:44+08:00 · intel · 修订1</p></header><div class=lead><p>让人形机器人完成一串家务，不能只看模型名字。LocoManiLab 把示范、策略和全身控制器放进共同评测，NVIDIA 的 GR00T 教程则展示怎样把这些环节接成开发流程。前者的 arXiv 首次提交日标注为 2026 年 10 月 22 日，后者页面标注发布于 10 月 23 日。本页按近七天补充选读，不把提交日期或页面日期当作实验发生日期。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">LocoManiLab 先把示范接到控制器</a></li><li><a href="#section-2">生成成功的示范，不保证策略学得更好</a></li><li><a href="#section-3">熟悉任务能做，换任务仍明显掉分</a></li><li><a href="#section-4">真机验证另用真实示范，成功口径也不同</a></li><li><a href="#section-5">NVIDIA 把采集、训练和评测连成操作流程</a></li><li><a href="#section-6">本期覆盖与后续证据</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>LocoManiLab 先把示范接到控制器</h2><p>中国电信 TeleAI 等机构参与的 LocoManiLab 团队研究一个具体问题。机器人即使走到抽屉旁，也可能站得不合适，无法接着伸手操作。因此，任务成绩取决于策略、控制器、命令接口与训练示范的组合。平台把数据采集、策略学习和执行评测接起来，覆盖五类家庭场景中的 234 项原子及组合任务。</p>
+<h3>从示范到动作，以论文的 GR00T N1.7 配置为例</h3>
+<ol>
+<li><p>人用 VR 设备遥操作机器人，通过全身控制器完成示范。每个回合记录第一视角 RGB 图像、实测机器人状态和控制器命令，供策略学习观测与动作的对应关系。</p>
+</li>
+<li><p>在原子任务与组合任务上分别训练，每份训练列表各含 50 项任务。GR00T N1.7 固定视觉和语言编码器，用示范训练投影层与动作扩散模块。状态和动作按训练集统计量归一化，训练目标是从观测生成对应的控制命令。</p>
+</li>
+<li><p>执行时，策略接收头部 RGB 图像、任务指令、43 个关节位置和 3 个投影重力分量。重力分量补充身体姿态信息。适配器输出 64 维 SONIC 运动表示与 14 个手指绝对目标。SONIC 根据运动表示实现身体运动，手指目标同步执行，策略随新观测继续预测。</p>
+</li>
+</ol>
+<h3>为什么接口必须一起报告</h3>
+<p>主评测把所有策略接到 SONIC，并以 50 Hz 发送控制命令。策略每 20 个控制步查询一次，较长动作块只执行前段，较短动作块用末动作补足。另一个五控制器对照则为各自接口和示范分别训练策略。因此，控制器对照比较的是训练后整套组合，不能把差异全部归因于控制器本身。</p>
+<figure><img src="https://arxiv.org/html/2610.30876v1/figure1_overview.png" alt="作者原图：S0.F1" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.30876v1/figure1_overview.png" alt="作者原图：S0.F1" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>看图时沿数据采集与生成、策略、控制器和评测四个环节理解平台。图注说明它同时测任务完成与执行质量，但概览图本身不证明新任务泛化或真机可靠性。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.30876v1#S0.F1">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.30876v1/figure1_overview.png">原图来源</a></p></figcaption></figure></section><section id="section-2"><span class="section-number">02</span><h2>生成成功的示范，不保证策略学得更好</h2><p>平台还研究怎样增加训练数据。这里的 Kimodo 是生成参考运动的数据生成器，下游 GR00T N1.7 或 π0.5 才是之后用这些示范训练的动作策略。两个训练过程需要分开理解。</p>
+<ol>
+<li><p>先让 Kimodo 根据动作文字、起始运动片段及身体根部或手腕目标生成一段全身参考运动。SONIC 保持固定，负责在仿真中执行参考。微调混合随机空间条件与任务阶段条件，奖励来自实际执行后的手掌接近目标程度、身体到目标的距离和姿态惩罚。</p>
+</li>
+<li><p>再用 PPO 调整生成器的去噪部分，并训练价值头。SONIC 和文本编码器保持固定，梯度不穿过仿真器或控制器。这使优化反馈来自运动执行结果，而非仅比较生成序列外观。</p>
+</li>
+<li><p>生成任务示范时，把刚执行过的运动作为下一段的前缀。导航用 A* 路径提供身体路点，操作用物体几何和预定标注构造手腕目标，接触与抓取反馈决定阶段推进和手指开合。所报告的采集流程事先确定用手及目标，执行中不在线询问语言模型。完成任务的轨迹才保留为示范。</p>
+</li>
+</ol>
+<h3>轨迹增强改的是执行过程</h3>
+<p>另一种数据来源从每项任务的一条遥操作轨迹出发，同步改变身体运动与手指目标的播放节奏，并扰动机器人和物体初始位置。动作顺序、手与身体同步关系及任务目标保留，候选轨迹仍须经过 SONIC 执行，并通过任务成功和物理有效性检查。它用于产生原示范附近的变化，不等于凭空获得新任务能力。</p>
+<h3>数据效用必须单独测</h3>
+<p>数据混合实验在相同的 20 项任务及场景上训练和测试 GR00T N1.7 与 π0.5。增加增强数据只改善了 GR00T 的部分组合任务表现，π0.5 在测试的混合方式下都未超过仅用遥操作数据的表现。数据来源拼接时没有配平数量或采样概率，训练暴露量也不同，因此不能把结果视作只改变数据质量的因果实验。生成轨迹能完成任务，并不保证加入训练后策略一定变强。</p>
+</section><section id="section-3"><span class="section-number">03</span><h2>熟悉任务能做，换任务仍明显掉分</h2><p>主评测比较 12 种策略，统一使用 SONIC。下表取无额外视觉域随机化的 XR-1 结果，用来观察同一策略在不同任务划分下的变化。</p>
+<table>
+<thead>
+<tr>
+  <th>评测划分</th>
+  <th>平均成功率</th>
+  <th>每项任务评测次数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>已见任务</td>
+  <td>80.2%</td>
+  <td>20</td>
+</tr>
+<tr>
+  <td>训练场景中的未见任务</td>
+  <td>25.2%</td>
+  <td>10</td>
+</tr>
+</tbody>
+</table>
+<p>成功由任务的物理判据决定，结果按任务等权平均，而非把所有回合混成一个比例。已见任务包含 50 项原子任务和 50 项组合任务，未见任务包含 46 项原子任务和 77 项组合任务。这不是同一批任务改名重测，结论是熟悉任务上的较高成功率不足以证明新任务泛化。</p>
+<h3>还要避免两种过度解读</h3>
+<ul>
+<li>未见场景划分同时换了场景和任务定义，不能把下降全部解释成房间布局变化。</li>
+<li>每种配置只训练一次，各模型保留自身预处理、动作块和优化方案。主评测预算约为各自采样单位的两遍训练，不是等算力比较，也没有多次独立训练给出的波动范围。</li>
+</ul>
+<p>五控制器研究另外统计功率、脚滑、动作变化、跌倒和相对完成时间。这些执行质量指标只统计成功回合，而任务成功率使用全部回合。因而较好的执行质量不能掩盖失败任务，功率和时间排名也不能脱离成功样本的构成解读。</p>
+</section><section id="section-4"><span class="section-number">04</span><h2>真机验证另用真实示范，成功口径也不同</h2><p>论文在 Unitree G1 上评估开冰箱、搬杯子和传送带取箱三项任务。GR00T N1.7、Fast-WAM 和 XR-1 都按任务分别训练，真机训练以每项 50 条真实示范替换仿真数据，每个模型与任务组合测试 10 次，由人判断是否完成。因此，这组实验检验的是两个环境中相应流程的表现，不能称为仿真策略不经适配直接上机。</p>
+<p>尤其要区分取箱任务。仿真要求三只箱子都搬到桌上，真机判据只是从移动传送带上拿起一只箱子。场景也只是近似对应，并非精确配对。两边都报成功率，不代表测量同一种完整任务成功，不能直接据此估计迁移损失或长期生产可靠性。</p>
+<p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.30876v1">阅读 LocoManiLab 论文</a>
+本文按论文全文及附录解释，结果均为作者报告。</p>
+</section><section id="section-5"><span class="section-number">05</span><h2>NVIDIA 把采集、训练和评测连成操作流程</h2><p>NVIDIA 技术博客由 Edith Llontop 与 Brandon Neel 署名，作者简介分别注明 NVIDIA 机器人解决方案架构师和高级产品营销经理。页面及其发布日期元数据均标注 2026 年 10 月 23 日。这里解读的是该教程当时介绍的流程，不据此断言 GR00T 1.7 在这一天首次发布。</p>
+<h3>先选控制器，再收示范</h3>
+<p>例子是在仿真中把货架上的苹果搬到盘子里，不需要机器人行走。团队用 AGILE 全身控制器维持平衡，遥操作时由它与 PinkIK 生成关节空间目标。控制器会改变训练信号的分布，因此选择控制器是数据采集前的决定。</p>
+<ol>
+<li><p>用 Isaac Teleop 与 VR 设备分批采集 400 条示范，把成功示范存入 HDF5。随后转换成 LeRobot 格式，映射头部相机 RGB、关节位置和处理后的动作，并加入搬苹果的语言指令。转换交付的不只是视频，还包括状态、动作和数据集元信息。</p>
+</li>
+<li><p>从 GR00T-N1.7-3B 出发做任务微调。教程命令固定语言模型，更新视觉骨干、投影层和扩散模型。它与上文 LocoManiLab 的 GR00T 配置不同，后者固定视觉和语言编码器，不能把两个来源的冻结设置混为一谈。</p>
+</li>
+<li><p>GR00T 以图像、语言和机器人状态为输入生成动作。评测时服务端加载微调后的模型，Arena 客户端运行仿真并持续查询模型，在同一任务与控制器配置下闭环执行。教程给出的最终输出只有一个回合，属于快速检查流程是否跑通。</p>
+</li>
+</ol>
+<h3>一次跑通之后还缺什么</h3>
+<p>教程建议用更多完整回合评估成功率。它也明确，复用流程到自己的机器人时，仍要定义任务、在自己的系统采集示范，再做转换、微调与评测。可复用的是开发步骤，适配数据和性能验证不能省略。</p>
+<h3>开放性信息的读取边界</h3>
+<p>页面称 GR00T 1.7 基础检查点为 30 亿参数，权重可从 GitHub 与 Hugging Face 获取，并标注 Apache 2.0 许可。本轮只读了教程正文，未核验仓库 README、具体版本活跃度、逐项权重与数据许可，也未验证完整硬件和依赖条件，不能把教程可读等同于已在本机跑通。</p>
+<p><a rel="noopener noreferrer" href="https://developer.nvidia.com/ko-kr/blog/develop-humanoid-robot-policies-end-to-end-with-nvidia-isaac-gr00t">阅读 NVIDIA 教程</a></p>
+</section><section id="section-6"><span class="section-number">06</span><h2>本期覆盖与后续证据</h2><p>本页依据 LocoManiLab 论文全文及 NVIDIA 教程选读，日期证据分别为 arXiv 首次提交日和页面标注的发布日期。本轮采集有失败、未读完候选和未覆盖部分，不能据此判断全行业没有其他更新。已推送材料及未核实一手日期的转载不用于填充本期主线。</p>
+<p>接下来值得跟踪的是更广的新任务验证、重复训练后的结果波动，以及使用一致成功判据的真机评测。当前材料已经提示这些条件会影响怎样解释模型成绩。</p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.30876v1">https://arxiv.org/html/2610.30876v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://arxiv.org/abs/2610.30876v1">https://arxiv.org/abs/2610.30876v1</a> · page · 2026-10-22</p><p><a rel="noopener noreferrer" href="https://developer.nvidia.com/ko-kr/blog/develop-humanoid-robot-policies-end-to-end-with-nvidia-isaac-gr00t">https://developer.nvidia.com/ko-kr/blog/develop-humanoid-robot-policies-end-to-end-with-nvidia-isaac-gr00t</a> · page · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://developer.nvidia.com/ko-kr/blog/develop-humanoid-robot-policies-end-to-end-with-nvidia-isaac-gr00t">https://developer.nvidia.com/ko-kr/blog/develop-humanoid-robot-policies-end-to-end-with-nvidia-isaac-gr00t</a> · page · 2026-10-23</p><aside>本轮有限来源选读，采用论文全文、官方教程及对应日期辅助证据。采集存在失败和未覆盖候选，未独立复现实验、试跑仓库或验证真机。 部分来源读取失败，本期仅采用已核实资料。</aside></article></body></html>
