@@ -1,0 +1,116 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>ViT-H 让视频生成的全身动作更容易执行｜2026-10-27</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>ViT-H 让视频生成的全身动作更容易执行｜2026-10-27</h1><p class="author-units">已核实作者单位<br>School of Computer Science, Peking University · Beijing Institute for General Artificial Intelligence · School of Psychological and Cognitive Sciences, Peking University · Institute for AI, Peking University · Yuanpei College, Peking University · State Key Lab of General AI · Beijing Key Laboratory of Brain-Computer Interface and Mental Health Modulation · Embodied Intelligence Lab, PKU-Wuhan Institute for AI · XS Vision</p><p class=meta>2026-10-27T09:35:16.227599+08:00 · paper · 修订1</p></header><div class=lead><p>看起来像人的动作，未必适合机器人执行。ViT-H 从单目视频直接生成 G1 参考动作，再让两类跟踪器执行并评分，用偏好学习改善生成器。本期重点解释这条反馈链，以及仿真跟踪成功与真机遥操作展示各自证明了什么。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">从模仿视频外观到生成可执行参考</a></li><li><a href="#section-2">先训练生成器和跟踪器，再构造偏好反馈</a></li><li><a href="#section-3">输入经过参考动作接口，再到关节力矩</a></li><li><a href="#section-4">在线生成还需要历史动作和缓冲管理</a></li><li><a href="#section-5">后训练提高留出视频的仿真跟踪成功率</a></li><li><a href="#section-6">真机与换跟踪器的证据分别到哪一步</a></li><li><a href="#section-7">优先读反馈设计，复现资源仍需另行核实</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>从模仿视频外观到生成可执行参考</h2><p>人形机器人要模仿视频中的转身、迈步或挥臂，既要保留动作意图，也要让全身控制器跟得上。传统流程先重建人体动作，再重定向到机器人，最后跟踪执行。前两步的误差会累积，局部看起来合理的参考仍可能难以执行。</p>
+<p>ViT-H 把视频到 G1 参考动作合并为一个生成模型，并用跟踪结果进行后训练。它省去的是推理阶段的人体重建和重定向。预训练中，没有配套 G1 动作的数据仍通过改造后的 GMR 重定向并筛选，因此不能称为训练全程不依赖重定向。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>先训练生成器和跟踪器，再构造偏好反馈</h2><ol>
+<li>学习视频与机器人动作的对应
+生成器在视频与动作配对数据和纯动作数据上预训练，向动作加噪后学习恢复干净的机器人动作。除去噪误差，还监督局部关节、表面顶点、根部平移、手脚静止状态和二维重投影，让姿态、运动轨迹与画面相互约束。</li>
+</ol>
+<p>纯动作数据没有视频特征。作者为它模拟相机轨迹，生成二维人体框和投影关键点，并把图像特征置零。预训练共有 383.8 小时动作，其中 79 小时配有视频。这是生成器的监督训练，不是用这些动作直接优化部署控制策略。</p>
+<ol start="2">
+<li><p>微调负责执行和评分的跟踪器
+部署跟踪器从 SONIC 出发用 PPO 微调，加入跟踪锚点身体水平位置和偏航角的奖励。两个跟踪器都只在 BONES-SEED 上微调。部署版本的 actor 输入保持原样，critic 额外获得机器人及参考的根部轨迹信息，辅助学习全局轨迹跟踪。</p>
+</li>
+<li><p>用特权跟踪器分清全局误差
+部署 actor 不观测机器人相对参考的根部位姿偏差，执行偏离可能混合生成轨迹误差与跟踪器自身漂移。作者从部署版本继续训练特权版本，把相对根部位置和朝向加入 actor。此阶段冻结 SONIC 编码器及辅助运动学解码器，只更新动作解码器与 critic。</p>
+</li>
+<li><p>让两种执行结果共同筛选候选
+对同一视频采样多条参考动作，部署跟踪器评估局部姿态误差，特权跟踪器评估全局运动误差，两者还提供整段成功信号。偏好对的较优候选必须被两者完整跟踪，并满足各奖励维度的差距要求，再选总奖励差距最大的候选对。有真实动作的数据额外使用与真值的误差，无动作标注的视频仍可参与后训练。</p>
+</li>
+<li><p>更新生成器而非把评分器直接当部署策略
+DPO 用预训练生成器的冻结副本作为参考，对优劣动作使用同一扩散步及噪声，调整生成器对两者的相对去噪损失。同时对较优动作做监督拟合。这里被后训练的是参考动作生成器，评分来源是执行轨迹，并不是对物理仿真直接求导。</p>
+</li>
+</ol>
+<figure><img src="https://arxiv.org/html/2610.32966v1/fig_method_v33.png" alt="作者原图：S3.F2" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.32966v1/fig_method_v33.png" alt="作者原图：S3.F2" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>按图注先看视频条件如何生成 G1 参考，再看两类跟踪器怎样提供不同评分，最后看离线与在线部署分支。特权跟踪器参与反馈，不等于实际部署具备同样观测。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.32966v1#S3.F2">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.32966v1/fig_method_v33.png">原图来源</a></p></figcaption></figure></section><section id="section-3"><span class="section-number">03</span><h2>输入经过参考动作接口，再到关节力矩</h2><ul>
+<li><p>视频侧输入
+生成器条件包括相对相机朝向、二维人体框、二维关键点和图像特征。论文分别用 DPVO、YOLOv8、ViTPose 和 Fast SAM 3D Body 提取这些量，因此“直接生成”仍包含视觉预处理。</p>
+</li>
+<li><p>生成器输出
+输出表示包含根部速度、两种坐标视角下的根部朝向、局部关节旋转，以及用于训练损失的相机相对尺度和平移、末端静止概率。恢复全局动作时丢弃后两类辅助量，用 G1 运动学模型求世界坐标中的关节和顶点位置。</p>
+</li>
+<li><p>控制器输入与输出
+部署跟踪器读取机器人状态和当前及未来参考帧，输出动作，再由 PD 控制器转为关节力矩。生成器输出的是参考运动，不是力矩。critic 的额外全局轨迹信息和特权 actor 的相对根部位姿不能混作部署必需观测。本文未在读取段落中逐项重列 SONIC 原有 actor 的全部状态字段，不能据名称补造传感器清单。</p>
+</li>
+</ul>
+</section><section id="section-4"><span class="section-number">04</span><h2>在线生成还需要历史动作和缓冲管理</h2><ol>
+<li><p>用前一段动作维持连续性
+在线版以此前生成的动作作为附加条件。训练时把前段的重叠帧放入当前去噪输入，也保留不带历史的训练样本以支持首次生成。部署时每次沿用此前 115 帧，生成 5 帧新动作，并对齐到全局动作队列。作者还对根部变换做轻量阻尼，减少长序列漂移。</p>
+</li>
+<li><p>让生成参考及时进入跟踪器
+真机使用固定的 RealSense D455，只读取 30 Hz RGB 视频，不使用深度，也不估计固定相机的相对朝向。系统先用约 10 秒产生首段动作，随后将新参考写入缓冲区并插值到 50 fps。为避免 SONIC 所需未来 10 帧带来额外等待，在线实现重复当前参考帧。</p>
+</li>
+<li><p>按测试配置理解延迟
+RTX 5090 上，各模块平均延迟相加为 253.7 毫秒，作者另留 100 毫秒余量，报告稳定运行时低于 400 毫秒。模块峰值独立测量，不能把它们相加称为端到端最坏延迟。这个口径也不包含上述约 10 秒初始化。</p>
+</li>
+</ol>
+<figure><img src="https://arxiv.org/html/2610.32966v1/fig_teleoperation_v4.png" alt="作者原图：A2.F1" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.32966v1/fig_teleoperation_v4.png" alt="作者原图：A2.F1" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>图注描述固定 RGB 相机拍摄操作者、G1 位于旁边的遥操作设置。它帮助理解输入采集方式，不是延迟测试曲线或任务成功率统计。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.32966v1#A2.F1">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.32966v1/fig_teleoperation_v4.png">原图来源</a></p></figcaption></figure></section><section id="section-5"><span class="section-number">05</span><h2>后训练提高留出视频的仿真跟踪成功率</h2><p>以下比较来自同一套 G1 与部署跟踪器的 MuJoCo 测试，使用估计相机运动。留出的视频集含 282 段视频，共 39.1 分钟，视频测试不强制切成固定长度。表中比较的是各生成模式自身后训练前后，不能把在线和离线视为具有相同未来信息的接口。</p>
+<table>
+<thead>
+<tr>
+  <th>生成方式</th>
+  <th>后训练前</th>
+  <th>后训练后</th>
+  <th>衡量的内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>离线整段生成</td>
+  <td>74.8%</td>
+  <td>80.0%</td>
+  <td>整段参考的跟踪成功率</td>
+</tr>
+<tr>
+  <td>在线自回归生成</td>
+  <td>49.6%</td>
+  <td>63.8%</td>
+  <td>整段参考的跟踪成功率</td>
+</tr>
+</tbody>
+</table>
+<p>这支持跟踪反馈能改善生成参考的可执行性，在线模式仍有明显失败空间。数值是仿真跟踪统计，不能转换为真机搬运或抓取成功率。</p>
+<p>成功要求整段都不触发终止条件。任一帧根部高度误差超过 0.25 米、根部朝向误差超过 1.0 弧度，或左右踝与左右腕对应链接的任一高度误差超过 0.25 米，就算失败。它不是只检查是否站住，也不是检查物体任务是否完成。当前读取的主表未给出逐视频重复次数，不补造重复试验口径。</p>
+<p>消融只在更困难的视频留出集上分析。只用部署跟踪器反馈时，在线成功率为 61.5%，加入特权跟踪器全局反馈后为 63.8%。这支持在该设置下全局反馈能补充局部反馈，不能扩大为所有任务都获得相同收益。</p>
+</section><section id="section-6"><span class="section-number">06</span><h2>真机与换跟踪器的证据分别到哪一步</h2><ul>
+<li><p>已经展示
+论文描述在物理 G1 上离线模仿视频和单 RGB 相机实时遥操作，覆盖移动与移动操作。这里的真机证据是演示，不能用前面的仿真表格代替重复真机任务统计。</p>
+</li>
+<li><p>换跟踪器的结果
+作者把后训练前后的参考交给未参与反馈的 Humanoid-GPT、ScaleBFM 和 HoloMotion，在视频留出集上均观察到成功率提高、跟踪误差降低。这是 G1 动作参考在不同跟踪器上的测试，不是换机器人形态的零样本迁移。</p>
+</li>
+<li><p>仍受动作表示限制
+系统没有建模灵巧手姿态，物体交互主要局限于较大、较简单物体的全身操作，不能据此推出抓取小物体等精细技能。研究也只验证了有限模型、数据和计算规模，尚不足以外推无限扩展后的效果。</p>
+</li>
+</ul>
+</section><section id="section-7"><span class="section-number">07</span><h2>优先读反馈设计，复现资源仍需另行核实</h2><p>建议先读第 3.2 节与附录 B.4，重点看如何把局部跟踪、全局轨迹及完整成功共同变成偏好对。再读 B.6 与 B.7，核对训练特权信息、部署输入及在线缓冲处理。这条阅读顺序能把“执行反馈改善生成”与“部署机器人获得额外全局观测”区分开。</p>
+<p>本期已读取冻结的论文正文及方法、部署、指标与局限附录，未运行实验，也未另行读取项目页面或代码仓库。首次提交或发布日期在本轮来源中未核实，来源元数据的 2026 年 10 月 26 日仅是列表日期。正文仅承诺将发布代码和处理后数据，不能据此确认已经可下载。训练权重是否公开、论文许可及代码和数据各自许可均待核实。</p>
+<p>论文全文
+https://arxiv.org/html/2610.32966v1</p>
+<p>论文给出的项目入口
+https://awfuact.github.io/vit-h/</p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.32966v1">https://arxiv.org/html/2610.32966v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><aside>仅依据本轮有限冻结来源，重点阅读全文与相关附录。候选采集存在失败及未读取项，不代表全领域覆盖。本文来源首次发表日期未知，列表日期不作发表日。未联网、未核验仓库可用性、未运行实验。 部分来源读取失败，本期仅采用已核实资料。</aside></article></body></html>
