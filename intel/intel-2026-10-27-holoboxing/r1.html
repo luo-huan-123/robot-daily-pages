@@ -1,0 +1,61 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>机器人情报｜2026-10-27｜七分钟仿真拳击训练的边界</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>机器人情报｜2026-10-27｜七分钟仿真拳击训练的边界</h1><p class=meta>2026-10-27T08:07:24+08:00 · intel · 修订1</p></header><div class=lead><p>复用一个已经会运动的全身控制器，能把新增拳击训练缩短到什么程度？HoloBoxing 将未来身体目标、实际执行与交互学习分开，让小型规划器学习任务决策。本文重点解释训练账本和比赛证据，避免把短时适配读成从零训练。</p>
+<p>本期按近七天论文补充收录。arXiv 标注首次提交日为 2026 年 10 月 23 日，这不是实验发生日，也不能单凭该日期认定属于滚动 48 小时内的新进展。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">会挥拳之后，还要学习何时行动</a></li><li><a href="#section-2">训练分三步，表示学习与任务学习各有目标</a></li><li><a href="#section-3">执行时，目标请求怎样变成关节动作</a></li><li><a href="#section-4">七分钟是附加训练账本，不是从零获得拳击能力</a></li><li><a href="#section-5">短版能形成对抗，但胜场不等于击打优势</a></li><li><a href="#section-6">消融支持整套设计，尚未证明各组件各自加速多少</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>会挥拳之后，还要学习何时行动</h2><p>Xihan Ma、Bo Zhang 等作者提出 HoloBoxing，将拳击任务决策放在已有全身运动能力之上。会跟踪一段出拳动作，仍不等于会接近对手、选择击打时机并在接触后保持站立。</p>
+<p>所测机器人为仿真的 Unitree G1，底层采用冻结的 HoloMotion v2 控制器。新增学习的重点是选择有用的运动请求，而不是重新学习每个关节怎样配合。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>训练分三步，表示学习与任务学习各有目标</h2><ol>
+<li><p>先把未来运动目标压缩成可用接口。参考动作来自 InterHuman 和已发布的 RoboStriker 轨迹。编码器把目标窗口压成归一化的 32 维向量，解码器重建位置与朝向，以按各维统计量归一化的重建误差训练。验证集选定检查点后，解码器权重与统计量冻结，编码器不进入实际执行链。</p>
+</li>
+<li><p>再用仿真执行中实际出现的状态初始化规划器。冻结的底层控制器跟踪参考动作，采集实际机器人观测和未来目标标签。规划器经冻结解码器预测目标，位置与朝向误差反向传播来更新规划器，解码器本身不更新。参考未来状态只提供监督标签，不作为规划器输入。</p>
+</li>
+</ol>
+<p>这里不能直接把参考轨迹中的状态当作实际状态。跟踪会产生偏差，因此标签被转到当前实测骨盆坐标系，并作共同水平对齐，让规划器学到的是在实际反馈下应提出什么目标。目标表示拟合与规划器初始化虽然都借助参考动作，学习对象和数据处理并不相同。</p>
+<ol start="3">
+<li>最后用交互奖励调整任务决策。PPO 先做 32 次站立热身更新，再用得到的权重和观测统计量启动 128 次交互更新，优化器状态重新初始化。短版始终面对同一个冻结的外部站立策略，不在训练中持续升级对手。</li>
+</ol>
+<p>训练奖励兼顾接近、朝向、接触、平衡和动作风格。规划器、预测未来奖励的价值网络，以及比较仿真运动与参考示例的风格判别器参与更新。目标解码器和全身控制器始终冻结。这样，奖励调整的是已有运动能力之上的决策，比赛胜负则由另一套裁判规则判定。</p>
+</section><section id="section-3"><span class="section-number">03</span><h2>执行时，目标请求怎样变成关节动作</h2><ul>
+<li><p>规划器先读取自身当前状态和对手位置。所用输入保留 63 个当前自身特征和 15 个对手位置特征，其余输入项置零，时间和比分不参与规划。它输出一个经过归一化的 32 维动作向量。</p>
+</li>
+<li><p>解码器把该向量展开为 225 个目标坐标，包含骨盆、双腕和双踝在五个未来时刻的位置与朝向，覆盖未来 20 至 100 毫秒。它负责组织运动请求，不直接输出机器人关节命令。</p>
+</li>
+<li><p>冻结的 HoloMotion v2 控制器同时接收这些目标与机器人反馈，完成关节级执行。因此，上层只保留 78 个观测特征，不意味着整套系统只使用这些信息，低层仍要依靠自身反馈控制运动。</p>
+</li>
+</ul>
+<p>紧凑表示的意义在于把规划器的动作选择从 225 维直接目标缩到 32 维。不过，目标重建误差小还不够，解码出来的目标也必须能被机器人跟踪。论文同时检查表示误差和物理执行表现，而不是仅凭重建损失决定表示是否可用。</p>
+</section><section id="section-4"><span class="section-number">04</span><h2>七分钟是附加训练账本，不是从零获得拳击能力</h2><p>作者报告总计 422.2 秒，约 7.0 分钟。其中，新流程在单张 RTX 4090 上运行 375.0 秒，再加上此前已记录的目标表示拟合耗时 47.2 秒。这个总数不是把全部阶段在同一台机器上重新连续执行的计时。</p>
+<p>新流程包括规划器模仿初始化、站立热身、交互学习，以及启动、保存和退出。总账不包含底层控制器预训练、下载、动作重定向、观测采集、评测和超参数搜索，也不包含固定训练对手原有的训练成本。</p>
+<p>因而，可以支持的判断是已有控制器和训练对手可用时，新增拳击适配达到分钟级。不同方法继承的运动能力、硬件和任务目标不同，这些计时不能组成受控的速度倍数比较，也不能证明它是普遍最快的方法。</p>
+</section><section id="section-5"><span class="section-number">05</span><h2>短版能形成对抗，但胜场不等于击打优势</h2><p>评测是六个冻结策略之间的固定十轮仿真联赛，每轮覆盖全部十五组配对，共 150 场。每对策略交手十场，每个策略总计五十场，随机分配侧位并记录初始条件种子。外部对手使用已发布权重，没有针对本评测环境再微调。</p>
+<p>短版对 GGSD 为 7 胜 3 负，得分有效接触为己方 21 次、对方 16 次。对 RoboStriker 则为 4 胜 6 负，有效接触为己方 4 次、对方 85 次。两组结果说明，它能产生得分交互，但对 RoboStriker 的胜场不足以证明进攻占优。</p>
+<p>裁判把对手头部或躯干上的合法手部接触计分，20 毫秒内法向冲量累计达到 5 牛顿秒计一分，同一只手随后有 200 毫秒计分冷却。足部击打和地面接触不计分。骨盆或躯干高度连续三秒低于场地上方 0.30 米会判定击倒并结束比赛。双方同时确认被击倒时判平局。若未提前结束，最多六十秒后按比分判胜负，同分为平局。</p>
+<p>这一判定很重要，因为对手自行跌倒也可能造成获胜。短版在整个联赛中有四场胜利没有得分手部接触。因此应把胜负、有效接触和跌倒一起读，不能仅凭排名把整体方法判为更强。</p>
+<figure><img src="https://arxiv.org/html/2610.32909v1/seven-minute-boxing.png" alt="作者原图：A5.F1" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.32909v1/seven-minute-boxing.png" alt="作者原图：A5.F1" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>先读图注所述的两组对局，上组对手为 GGSD，下组为 RoboStriker。这些画面由保存的机器人姿态重建，击中标签对应记录的裁判事件。它们展示具体交互，不能用选帧估算胜率，也不是真机验证。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.32909v1#A5.F1">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.32909v1/seven-minute-boxing.png">原图来源</a></p></figcaption></figure></section><section id="section-6"><span class="section-number">06</span><h2>消融支持整套设计，尚未证明各组件各自加速多少</h2><p>短版与两种组件移除版本使用同一个训练种子、128 个并行环境和相同的采样步数，均完成 32 次热身更新与 128 次最终更新。一个版本去掉模仿参数更新，另一个改为直接输出 225 维目标。短版与直接目标版都用同一批实测样本做 20 轮模仿训练，并共享固定站立对手。</p>
+<p>在同一联赛中，完整短版排名和得分接触均高于两种组件移除版本。这支持在所测预算下保留模仿初始化与紧凑目标接口。但去掉解码器同时改变了动作维度和探索几何，实验没有单独分离每个组件对收敛速度的贡献。</p>
+<p>证据还受小型动作集、单个任务训练种子和不同策略观测接口的限制。当前只有仿真，真机拳击与迁移尚未测试。后续更有价值的证据，是独立训练种子、匹配条件下的耗时比较，以及跨动作覆盖和真实机器人验证。</p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.32909v1">https://arxiv.org/html/2610.32909v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://arxiv.org/abs/2610.32909v1">https://arxiv.org/abs/2610.32909v1</a> · page · 2026-10-23</p><aside>本期仅采用本轮冻结来源中的 HoloBoxing 全文与 arXiv 首次提交日期证据，作为近七天论文补充。未确认足以作为最近48小时主线的一手事件，不代表该时段没有新进展。部分账号和候选网页采集失败或未读取，商业转载与无日期产品页未列入主线。未运行代码或独立复现实验。 部分来源读取失败，本期仅采用已核实资料。</aside></article></body></html>
