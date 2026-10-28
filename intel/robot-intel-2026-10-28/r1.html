@@ -1,0 +1,83 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>机器人情报｜2026-10-28</title><style>
+*{box-sizing:border-box}html{background:#f4f6f8;color:#202a35}
+body{max-width:52rem;margin:auto;padding:2rem 1.25rem;font:17px/1.85 system-ui,-apple-system,sans-serif;overflow-wrap:anywhere}
+article{background:white;border:1px solid #e0e5ea;border-radius:14px;padding:2rem}
+h1{font-size:1.8rem;line-height:1.45;margin:0 0 .6rem}h2{font-size:1.22rem;line-height:1.55;margin:2rem 0 .75rem;color:#183e59}
+h3{font-size:1.1rem}p{margin:.7rem 0 1rem}a{color:#156086;text-underline-offset:3px;overflow-wrap:anywhere}
+.meta,small,figcaption{color:#566471;font-size:.85rem}.author-units{background:#edf3f6;border-radius:8px;padding:.7rem 1rem}.lead{font-size:1.05rem;border-left:3px solid #3084a4;padding-left:1rem;margin:1.25rem 0 2rem}
+ul,ol{padding-left:1.5rem}li+li{margin-top:.4rem}blockquote,aside{background:#edf3f6;border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+pre{max-width:100%;overflow:auto;padding:1rem;background:#f1f4f6;border-radius:8px;font-size:.85rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+code{background:#f1f4f6;padding:.1em .25em;border-radius:3px}pre code{padding:0}table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
+th,td{padding:.5rem;border:1px solid #dce3e8;overflow-wrap:anywhere}th{background:#edf3f6}
+.math-inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;padding:0 .12rem}
+.math-display{display:block;max-width:100%;overflow:auto;padding:.8rem .3rem;background:#f7f9fb;border-radius:8px}
+math{font-size:1.12em}.math-note,.image-note{font-size:.9rem;color:#566471}
+figure{margin:1.5rem 0;padding:1rem;border:1px solid #e0e5ea;border-radius:10px;background:#fafcfd}
+figure>img{display:block;width:100%;height:auto}figcaption p{line-height:1.6;margin:.5rem 0}
+summary{cursor:pointer;color:#156086;font-size:.9rem;padding:.5rem 0}.figure-large{min-width:0;max-width:100%}.figure-zoom{min-width:0;max-width:100%;max-height:80vh;overflow:auto}
+.figure-zoom img{display:block;max-width:none;width:auto;height:auto}
+input,select{max-width:100%;padding:.5rem;margin:.3rem;font:inherit;border:1px solid #bec9d2;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem;border-radius:10px}h1{font-size:1.5rem}figure{padding:.5rem}.lead{padding-left:.75rem}}
+
+html{background:#f1f4f1;color:#213d34}body{max-width:56rem;padding:2.5rem 1.25rem;line-height:1.9}
+article{border-color:#dbe5df;padding:2.5rem}h1{font-size:2rem;margin-bottom:.8rem}h2{font-size:1.35rem;margin:.35rem 0 .9rem;color:#173f32}
+section{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid #dbe5df;scroll-margin-top:1rem}.section-number{font-size:.8rem;color:#638176;letter-spacing:.1em}
+.contents{padding:1rem 1.2rem;background:#f1f6f3;border-radius:8px}.contents ol{margin:.5rem 0}.figure-note{background:#edf5ef;padding:.7rem;border-radius:6px}
+@media(max-width:600px){body{padding:.75rem;font-size:16px}article{padding:1rem}h1{font-size:1.5rem}}
+</style></head><body><article><header><h1>机器人情报｜2026-10-28</h1><p class=meta>2026-10-28T08:06:30.081697+08:00 · intel · 修订1</p></header><div class=lead><p>四足机器人能侧移，但规划器若简化掉这一能力，就可能走得保守。本期沿一项连续时间规划研究，解释感知怎样变成速度指令，以及数学约束为何仍不能消除真机碰撞。</p>
+<p>选读材料的日期标注集中在 2026 年 10 月 26 日。论文日期是 arXiv 首次提交日，企业日期是公告日，实验开展时间和新增站点实际投运时间不能由此推定。产品与商业部分另看 Genie Studio 2.0 的开发运营流程，以及 Digit 的扩点计划。</p>
+</div><nav class="contents" aria-label="本文目录"><strong>本文内容</strong><ol><li><a href="#section-1">四足规划的难点在于保留可执行的侧移</a></li><li><a href="#section-2">从点云到速度指令的闭环</a></li><li><a href="#section-3">为什么约束系数能覆盖整段轨迹</a></li><li><a href="#section-4">仿真表明保留运动能力可以缩短任务用时</a></li><li><a href="#section-5">真机证明可以机载运行，也留下两次接触</a></li><li><a href="#section-6">Genie Studio 2.0 把模型能力接入现场流程</a></li><li><a href="#section-7">Digit 扩点是新协议，投运仍在计划中</a></li></ol></nav><section id="section-1"><span class="section-number">01</span><h2>四足规划的难点在于保留可执行的侧移</h2><p>这项研究由 Amazon Fulfillment Technologies &amp; Robotics、University of Iowa、Massachusetts Institute of Technology 的署名作者提出。arXiv 首次提交日标注为 2026 年 10 月 26 日，该日期不代表真机实验发生日。</p>
+<p>四足机器人可以向前、横移和转身，但纵向与横向速度能力不同，而且世界坐标中的可行运动方向随身体朝向变化。把机器人简化成不能横移的独轮车模型会丢掉能力，把各方向速度一概视为相同又可能高估横向能力。</p>
+<p>作者保留平面位置和朝向，以及独立的纵向、横向速度和偏航角速度，接受由此产生的非凸优化问题。这里不训练新的导航策略，行为由目标函数与约束塑造，输出仍交给既有运动控制器执行。</p>
+</section><section id="section-2"><span class="section-number">02</span><h2>从点云到速度指令的闭环</h2><ol>
+<li><p>整理障碍与目标
+Spot 的五个机身深度相机点云被融合成占据栅格，再聚类并为每组拟合圆，得到约 18 Hz 更新的障碍集合。全局 A* 规划器另提供当前局部目标，局部规划器不直接从图像预测动作。</p>
+</li>
+<li><p>补偿求解期间的运动
+输入还包括机器人位姿估计与初始速度命令。机器人在求解时继续运动，因此规划起点使用按求解耗时向前传播的位姿，使新轨迹与预计开始执行时的位置一致。</p>
+</li>
+<li><p>优化一小段可执行命令
+优化变量包括位姿与速度曲线的控制点，以及有界的规划时长。目标推动轨迹终点接近局部目标，并惩罚较大的转向角速度。前后、横向和转向速度受限，纵向与横向速度还共享一个椭圆形约束，不能同时把两个方向都用到各自最大值。</p>
+</li>
+<li><p>执行并重新观测
+求解器使用 CasADi 与 IPOPT，后续求解以上一轮解作初始值。输出的三维机身速度命令交给 Spot 的黑箱底层控制器，新的里程计和点云再进入下一轮。规划层没有直接输出足端位置或关节力矩。</p>
+</li>
+</ol>
+</section><section id="section-3"><span class="section-number">03</span><h2>为什么约束系数能覆盖整段轨迹</h2><p>普通离散规划即便在检查点上满足避障条件，也可能漏掉两点之间的碰撞。该方法用若干低阶 Bernstein 多项式拼接位姿与速度曲线。多项式的值始终落在其系数的上下界之间，因此可把连续时间限制转成有限个系数约束。</p>
+<p>速度椭圆约束与圆形障碍的距离平方条件都能写成多项式。作者对这些约束多项式的系数施加界限，足以保证整段规划曲线满足对应条件，而非只检查几个时刻。机器人也用包住身体的圆盘表示，这便于认证，却会保守地占用一部分本可通过的横向空间。</p>
+<p>需要分清两类保证</p>
+<ul>
+<li>运动学关系含有朝向的三角函数，论文在控制点上近似施加该关系，并未证明多项式轨迹处处精确满足运动学。由此带来的偏差需要底层跟踪处理。</li>
+<li>连续速度与避障条件针对规划曲线和本次感知的障碍集合。障碍在求解期间按静止处理，重规划之间的障碍移动没有被认证，感知误差与超出安全余量的跟踪误差也未被覆盖。</li>
+</ul>
+</section><section id="section-4"><span class="section-number">04</span><h2>仿真表明保留运动能力可以缩短任务用时</h2><p>论文在 Isaac Sim 中比较相同的 50 个场景种子。任务是在包含 25 个圆柱障碍的场地穿越 20 米，静态测试固定障碍，动态测试让障碍在各自通道中往返横穿。种子用于生成评测场景，不是训练随机种子。</p>
+<p>每次试验按成功、碰撞或超时分类。成功必须无碰撞，并在 40 秒上限内到达距目标 1 米以内。各方法共享局部目标与可见障碍集合。作者方法及其运动学消融将实测求解延迟计入闭环，机器人在等待新解时仍执行上一条轨迹。</p>
+<ul>
+<li>在静态条件下，完整方法与保守对照 int-vy 均为 50 次成功、零碰撞、零超时。论文表中任务用时分别为 9.7 秒与 16.5 秒。int-vy 把所有方向的速度限制在较低的横向上限，这组比较支持更充分利用方向相关的速度范围，不能单独量化侧移的贡献。</li>
+<li>在动态条件下，完整方法成功 41 次、碰撞 9 次，int-vy 成功 40 次、碰撞 10 次。两者都没有超时，不能把总体表现接近写成任何场景都同样安全。</li>
+</ul>
+<p>论文另比较了分层安全过滤器和局部反应式控制器，但这些外部基线按理想化或论文公布的固定频率运行，本文规划器则承担实测求解延迟。不同实现的运行条件需要随结论保留，不将这一组实验外推成对所有导航方法的排名。</p>
+<figure><img src="https://arxiv.org/html/2610.35670v1/figs/fig_env_top_ab.png" alt="作者原图：S5.F4" loading="lazy" decoding="async" referrerpolicy="no-referrer"><details class="figure-large"><summary>放大查看原图（可横向移动）</summary><div class="figure-zoom"><img src="https://arxiv.org/html/2610.35670v1/figs/fig_env_top_ab.png" alt="作者原图：S5.F4" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div></details><p class="image-note">若图片未加载，请通过下方原图来源查看。</p><figcaption><p class="figure-note"><strong>看图提示</strong><br>对照图中的静态与动态两种设置，前者保持圆柱障碍不动，后者让障碍在各自通道中往返横穿。图说明仿真场景，不是真机安全性的证据。</p><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.35670v1#S5.F4">原文与完整图注</a> · <a rel="noopener noreferrer" href="https://arxiv.org/html/2610.35670v1/figs/fig_env_top_ab.png">原图来源</a></p></figcaption></figure></section><section id="section-5"><span class="section-number">05</span><h2>真机证明可以机载运行，也留下两次接触</h2><p>全套感知、全局规划与局部优化在 Spot 搭载的 NVIDIA Jetson Thor 上运行。作者连续进行了 22 次穿越五台移动差速机器人场地的试验，共 392 米，20 次成功，2 次与障碍接触。</p>
+<p>真机采用较低的速度上限，纵向 1.2 米每秒、横向 0.6 米每秒、转向 0.6 弧度每秒。全部试验中，优化求解耗时中位数为 16.3 毫秒，95 分位为 37.9 毫秒，计入额外开销后的平均重规划频率为 36 Hz。这些求解耗时不是整次任务用时，也不是相机刷新周期。</p>
+<p>作者认为接触可能与障碍的准静态假设有关，但没有把原因证明为唯一归因。此处最值得继续跟踪的是加入障碍运动预测后能否减少接触，以及感知延迟和跟踪误差怎样进入闭环安全分析。</p>
+<p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.35670v1">阅读论文全文</a></p>
+</section><section id="section-6"><span class="section-number">06</span><h2>Genie Studio 2.0 把模型能力接入现场流程</h2><p>AGIBOT 在正文日期为 10 月 26 日的公告中发布 Genie Studio 2.0。它把模型开发、任务编排与机器人群运维接在一起，下面是厂商披露的操作流程，不能由此补推模型内部架构或训练损失。</p>
+<ol>
+<li><p>Flywheel 先组织数据与模型
+平台汇集真机视觉、运动轨迹和执行状态，并允许接入仿真及开源数据。用户可训练视觉、VLA 与强化学习模型，或使用 GO-2 基础模型及微调工具，再在仿真中测试，现场失败与异常回流下一轮训练。</p>
+</li>
+<li><p>Agent 将技能编成业务流程
+用户通过拖拽组合导航、视觉定位、模型推理和决策逻辑，也能加入自定义业务规则、连接第三方系统。部署前可在仿真中检查路径、碰撞、姿态与流程逻辑，验证后的技能节点和参数可打包复用。</p>
+</li>
+<li><p>Monitor 把运行问题反馈回来
+运维人员集中查看机器人状态与任务进度，分组派发任务，故障时定位机器人及流程步骤，并进行远程介入和在线调试。运行数据、异常和处理记录再送回 Agent 与 Flywheel，分别用于流程和模型改进。</p>
+</li>
+</ol>
+<p>公告举例，常州一个涉及六台 CNC 机床及机器人与 AGV 协同的项目，从需求定义到产线验证历时 14 天。现场仍要接入 PLC、MES、视觉系统与工装。这个案例体现的是开发与集成流程，14 天不是无需适配即可复制到任意产线的保证。</p>
+<p><a rel="noopener noreferrer" href="https://agibot.com/article/231/detail/130.html">阅读 AGIBOT 公告</a></p>
+</section><section id="section-7"><span class="section-number">07</span><h2>Digit 扩点是新协议，投运仍在计划中</h2><p>GXO 与 Agility 在 10 月 26 日的联合公告中宣布，将 Digit 扩展到北卡罗来纳州 Statesville 和田纳西州 Lebanon 两个站点，用于电商履约中的重复物料搬运。预计 2027 年初先使用 Digit 4，再在 Digit 5 商用后迁移，不是两个站点已经完成投运。</p>
+<p>同日的商业进展公告还披露三家未具名制造业客户，分别涉及汽车整车、汽车技术与零部件、消费品，均参加面向具体制造需求的付费项目。公司另称有 30 多家潜在客户处于商业讨论或客户加速计划中，潜在客户不能等同于签约部署量。</p>
+<p>对扩点价值的判断仍应等实际运行证据。新站点的投运日期、持续运行、故障和人工介入记录，会比协议本身更能说明跨站点复制能力。当前公告提供的是计划与公司自述，不构成独立的可靠性验证。</p>
+<p><a rel="noopener noreferrer" href="https://www.agilityrobotics.com/content/gxo-and-agility-robotics-expand-partnership-to-accelerate-deployment-of-humanoids-in-u-s-operations">阅读扩点联合公告</a></p>
+<p><a rel="noopener noreferrer" href="https://www.agilityrobotics.com/content/agility-robotics-highlights-commercial-momentum-and-growing-enterprise-demand-for-digit-humanoid-robot">阅读商业进展公告</a></p>
+</section><h2>来源</h2><p><a rel="noopener noreferrer" href="https://arxiv.org/html/2610.35670v1">https://arxiv.org/html/2610.35670v1</a> · fulltext · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://arxiv.org/abs/2610.35670v1">https://arxiv.org/abs/2610.35670v1</a> · page · 2026-10-26</p><p><a rel="noopener noreferrer" href="https://agibot.com/article/231/detail/130.html">https://agibot.com/article/231/detail/130.html</a> · page · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://www.agilityrobotics.com/content/gxo-and-agility-robotics-expand-partnership-to-accelerate-deployment-of-humanoids-in-u-s-operations">https://www.agilityrobotics.com/content/gxo-and-agility-robotics-expand-partnership-to-accelerate-deployment-of-humanoids-in-u-s-operations</a> · page · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><p><a rel="noopener noreferrer" href="https://www.agilityrobotics.com/content/agility-robotics-highlights-commercial-momentum-and-growing-enterprise-demand-for-digit-humanoid-robot">https://www.agilityrobotics.com/content/agility-robotics-highlights-commercial-momentum-and-growing-enterprise-demand-for-digit-humanoid-robot</a> · page · 采集元数据未提供日期，请以正文的日期说明为准；未说明则日期未知</p><aside>本期仅使用冻结来源选读。正文采集尝试 24 项，成功 18 项、失败 6 项，另有 12 项未读，社交账号及搜索入口也存在失败或跳过。未覆盖不等于没有更新。已推荐材料未确认实质变化的不重复推荐，其余候选未全部展开。论文、产品与商业结果均按来源方报告，未独立复现。 部分来源读取失败，本期仅采用已核实资料。</aside></article></body></html>
